@@ -16,15 +16,15 @@ class CreatePluginsTable extends Migration
     {
         Schema::create('plugins', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->default('');
-            $table->string('comain')->default('');
-            $table->string('account')->default('');
-            $table->string('password')->default('');
-            $table->string('login_url')->default('');
-            $table->tinyInteger('account_type')->default(1);
-            $table->string('admin_name')->default('');
-            $table->tinyInteger('status')->default(1);
-            $table->string('remark')->nullable('');
+            $table->string('name');
+            $table->string('company');
+            $table->string('account');
+            $table->string('password');
+            $table->string('site');
+            $table->tinyInteger('type');
+            $table->string('admin');
+            $table->tinyInteger('status')->nullable()->default(1);
+            $table->string('mark')->nullable();
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ class Plugin extends Model
         'shushu' => '数数后台',
     ];
 
-    public static $comainConfig = [
+    public static $companyConfig = [
         'shanghaiyouming'=>'上海游民',
         'ali'=>'阿里',
         'tencent'=>'腾讯',
@@ -28,7 +28,7 @@ class Plugin extends Model
     ];
 
     protected $fillable = [
-        'name', 'comain', 'account','password','login_url','account_type','admin_name','status','remark'
+        'name', 'company', 'account','password','site','type','admin','status','mark'
     ];
 
 

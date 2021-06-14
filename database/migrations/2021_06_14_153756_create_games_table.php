@@ -4,23 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePluginParamsTable extends Migration
+class CreateGamesTable extends Migration
 {
     /**
      * Run the migrations.
      *
-
      * @return void
      */
     public function up()
     {
-        Schema::create('plugin_params', function (Blueprint $table) {
+        Schema::create('games', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->tinyInteger('e_mark');
-            $table->tinyInteger('type');
-            $table->string('plugin_use');
-            $table->string('params');
+            $table->Integer('game_group_id');
+            $table->tinyInteger('publisher_id');
+            $table->tinyInteger('sign_id');
+            $table->tinyInteger('cooperation_mode');
+            $table->string('game_secret');
             $table->tinyInteger('status')->nullable()->default(1);
             $table->string('mark')->nullable();
             $table->timestamps();
@@ -34,6 +34,6 @@ class CreatePluginParamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('plugin_params');
+        Schema::dropIfExists('games');
     }
 }

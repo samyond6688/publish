@@ -15,4 +15,7 @@ Route::group([
     $router->get('/', 'HomeController@index');
     $router->resource('plugins', 'PluginController');
     $router->resource('plugin_params', 'PluginParamController');
+    $router->resource('game_groups', 'GameGroupController');
+    $router->resource('game_resources', 'GameResourceController');
+    $router->resource('games', 'GameController');
 });

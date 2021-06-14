@@ -5,6 +5,7 @@ use Dcat\Admin\Grid;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid\Filter;
 use Dcat\Admin\Show;
+use Dcat\Admin\Layout\Content;
 
 /**
  * Dcat-admin - admin builder based on Laravel.
@@ -24,3 +25,30 @@ use Dcat\Admin\Show;
  * Admin::js('/packages/prettydocs/js/main.js');
  *
  */
+
+Grid::resolving(function (Grid $grid) {
+    $grid->disableBatchActions();
+    $grid->disableBatchDelete();//禁用批量操作
+    $grid->disableRowSelector();
+    $grid->disableViewButton();
+    $grid->disableDeleteButton();
+});
+
+Form::resolving(function (Form $form) {
+    $form->footer(function ($footer) {
+
+        // 去掉`查看`checkbox
+        $footer->disableViewCheck();
+
+        // 去掉`继续编辑`checkbox
+        $footer->disableEditingCheck();
+
+        // 去掉`继续创建`checkbox
+        $footer->disableCreatingCheck();
+
+    });
+});
+
+Filter::resolving(function (Filter $filter) {
+    $filter->panel();
+});

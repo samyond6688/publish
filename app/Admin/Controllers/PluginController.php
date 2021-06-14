@@ -21,7 +21,7 @@ class PluginController extends AdminController
     protected function grid()
     {
         return Grid::make(new Plugin(), function (Grid $grid) {
-            $grid->column('comain')->using(Plugin::$comainConfig);
+            $grid->column('company')->using(Plugin::$companyConfig);
 
             $grid->column('name')->using(Plugin::$nameConfig);
 
@@ -41,24 +41,19 @@ class PluginController extends AdminController
                 return "<div style='padding:10px 10px 0'>$card</div>";
             });
 
-            $grid->column('login_url')->link();
+            $grid->column('site')->link();
 
-            $grid->column('admin_name');
-            $grid->column('account_type')->using(Plugin::$accountTypeConfig);
-            $grid->column('remark');
+            $grid->column('admin');
+            $grid->column('type')->using(Plugin::$accountTypeConfig);
+            $grid->column('mark');
             $grid->column('status')->switch();
             $grid->filter(function (Grid\Filter $filter) {
-                $filter->panel();
-                $filter->equal('comain')->select(Plugin::$comainConfig)->width(3);
+                $filter->equal('company')->select(Plugin::$companyConfig)->width(3);
                 $filter->equal('name')->select(Plugin::$nameConfig)->width(3);
-                $filter->equal('admin_name')->width(3);
-                $filter->equal('account_type')->select(Plugin::$accountTypeConfig)->width(3);
+                $filter->equal('admin')->width(3);
+                $filter->equal('type')->select(Plugin::$accountTypeConfig)->width(3);
             });
 
-            $grid->disableBatchActions();
-            $grid->disableBatchDelete();//禁用批量操作
-            $grid->disableRowSelector();
-            // $grid->showColumnSelector();
         });
     }
 
@@ -74,14 +69,14 @@ class PluginController extends AdminController
         return Show::make($id, new Plugin(), function (Show $show) {
             $show->field('id');
             $show->field('name');
-            $show->field('comain');
+            $show->field('company');
             $show->field('account');
             $show->field('password');
-            $show->field('login_url');
-            $show->field('account_type');
-            $show->field('admin_name');
+            $show->field('site');
+            $show->field('type');
+            $show->field('admin');
             $show->field('status');
-            $show->field('remark');
+            $show->field('mark');
             $show->field('created_at');
             $show->field('updated_at');
         });
@@ -97,28 +92,14 @@ class PluginController extends AdminController
         return Form::make(new Plugin(), function (Form $form) {
             $form->display('id');
             $form->select('name')->options(Plugin::$nameConfig);
-            $form->select('comain')->options(Plugin::$comainConfig);
+            $form->select('company')->options(Plugin::$companyConfig);
             $form->text('account');
             $form->text('password');
-            $form->text('login_url');
-            $form->select('account_type')->options(Plugin::$accountTypeConfig);
-            $form->text('admin_name');
-            $form->text('remark');
-
+            $form->text('site');
+            $form->select('type')->options(Plugin::$accountTypeConfig);
+            $form->text('admin');
+            $form->text('mark');
             $form->hidden('status');
-
-            $form->footer(function ($footer) {
-
-                // 去掉`查看`checkbox
-                $footer->disableViewCheck();
-
-                // 去掉`继续编辑`checkbox
-                $footer->disableEditingCheck();
-
-                // 去掉`继续创建`checkbox
-                $footer->disableCreatingCheck();
-
-            });
         });
     }
 }

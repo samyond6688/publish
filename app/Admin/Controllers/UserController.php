@@ -25,10 +25,10 @@ class UserController extends AdminController
             $grid->column('password');
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
-        
+
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-        
+
             });
         });
     }
@@ -66,7 +66,7 @@ class UserController extends AdminController
             $form->text('email');
             $form->text('email_verified_at');
             $form->text('password');
-        
+
             $form->display('created_at');
             $form->display('updated_at');
         });

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PluginParam extends Model
 {
 
-    public static $signConfig = [
+    public static $eMarkConfig = [
         1=>'apple',
         2=>'google',
         3=> 'adjust',
@@ -32,7 +32,7 @@ class PluginParam extends Model
     ];
 
     protected $fillable = [
-        'name', 'sign', 'type','plugin_use','params','status','remark'
+        'name', 'e_mark', 'type','plugin_use','params','status','mark'
     ];
 
     public function getParamsAttribute($value)
@@ -44,5 +44,22 @@ class PluginParam extends Model
     {
         $this->attributes['params'] = json_encode(array_values($value));
     }
+
+    public function getPluginUseAttribute($value)
+    {
+        return array_values(array_column(json_decode($value, true) ?: [], 'useType'));
+    }
+
+    public function setPluginUseAttribute($PluginUseList){
+        $valueNew = [];
+        if($PluginUseList = json_decode($PluginUseList)){
+            foreach ($PluginUseList as $key => $value) {
+                $valueNew[] = ['useType' => $value];
+            }
+        }
+        $this->attributes['plugin_use'] = json_encode($valueNew);
+    }
+
+
 
 }

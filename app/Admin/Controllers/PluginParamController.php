@@ -11,6 +11,7 @@ use App\Models\Plugin;
 use Dcat\Admin\Form\NestedForm;
 use Dcat\Admin\Widgets\Card;
 
+
 class PluginParamController extends AdminController
 {
     /**
@@ -22,10 +23,9 @@ class PluginParamController extends AdminController
     {
         return Grid::make(new PluginParam(), function (Grid $grid) {
             $grid->column('name')->using(Plugin::$nameConfig);
-            $grid->column('sign')->using(PluginParam::$signConfig);
+            $grid->column('e_mark')->using(PluginParam::$eMarkConfig);
             $grid->column('type')->using(PluginParam::$typeConfig);
             $grid->column('plugin_use')->display(function($value){
-                $value = json_decode($value);
                 $newValue = [];
                 foreach ($value as $key) {
                     $newValue[] = PluginParam::$useConfig[$key];
@@ -65,19 +65,16 @@ class PluginParamController extends AdminController
             });
 
             $grid->column('status')->switch();
-            $grid->column('remark');
+            $grid->column('mark');
 
             $grid->filter(function (Grid\Filter $filter) {
-                $filter->panel();
                 $filter->equal('name')->select(Plugin::$nameConfig)->width(3);
-                $filter->equal('sign')->select(PluginParam::$signConfig)->width(3);
+                $filter->equal('e_mark')->select(PluginParam::$eMarkConfig)->width(3);
                 $filter->equal('type')->select(PluginParam::$typeConfig)->width(3);
-                $filter->equal('plugin_use')->select(PluginParam::$useConfig)->width(3);
+                $filter->where('plugin_use',function($query){
+                    $query->whereRaw('JSON_CONTAINS(plugin_use,JSON_OBJECT("useType", "'.$this->input.'"))');
+                })->select(PluginParam::$useConfig)->width(3);
             });
-
-            $grid->disableBatchActions();
-            $grid->disableBatchDelete();//禁用批量操作
-            $grid->disableRowSelector();
         });
     }
 
@@ -93,12 +90,12 @@ class PluginParamController extends AdminController
         return Show::make($id, new PluginParam(), function (Show $show) {
             $show->field('id');
             $show->field('name');
-            $show->field('sign');
+            $show->field('e_mark');
             $show->field('type');
             $show->field('plugin_use');
             $show->field('params');
             $show->field('status');
-            $show->field('remark');
+            $show->field('mark');
             $show->field('created_at');
             $show->field('updated_at');
         });
@@ -111,10 +108,11 @@ class PluginParamController extends AdminController
      */
     protected function form()
     {
+
         return Form::make(new PluginParam(), function (Form $form) {
             $form->display('id');
             $form->select('name')->options(Plugin::$nameConfig);
-            $form->select('sign')->options(PluginParam::$signConfig);
+            $form->select('e_mark')->options(PluginParam::$eMarkConfig);
             $form->select('type')->options(PluginParam::$typeConfig);
             // $form->select('plugin_use')->options(PluginParam::$useConfig);
             $form->checkbox('plugin_use')
@@ -129,23 +127,10 @@ class PluginParamController extends AdminController
                     $table->text($key,$value);
                 }
             });
-
-            $form->text('remark')->width(4);
-
+            $form->text('mark');
             $form->hidden('status');
-
-            $form->footer(function ($footer) {
-
-                // 去掉`查看`checkbox
-                $footer->disableViewCheck();
-
-                // 去掉`继续编辑`checkbox
-                $footer->disableEditingCheck();
-
-                // 去掉`继续创建`checkbox
-                $footer->disableCreatingCheck();
-
-            });
         });
     }
+
+
 }
