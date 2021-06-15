@@ -88,7 +88,7 @@ class GameController extends AdminController
             $form->select('sign_id')->options(Game::$signConfig)->required();
             $form->select('cooperation_mode')->options(Game::$cooperationModeConfig)->required();
             $form->text('game_secret')->required();
-            $form->hidden('status');
+            $form->hidden('status')->default(1);
             $form->text('mark');
         });
     }

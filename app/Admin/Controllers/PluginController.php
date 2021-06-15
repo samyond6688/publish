@@ -99,7 +99,7 @@ class PluginController extends AdminController
             $form->select('type')->options(Plugin::$accountTypeConfig);
             $form->text('admin');
             $form->text('mark');
-            $form->hidden('status');
+            $form->hidden('status')->default(1);
         });
     }
 }

@@ -128,7 +128,7 @@ class PluginParamController extends AdminController
                 }
             });
             $form->text('mark');
-            $form->hidden('status');
+            $form->hidden('status')->default(1);
         });
     }
 

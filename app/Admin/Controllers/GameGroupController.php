@@ -115,7 +115,7 @@ class GameGroupController extends AdminController
 
             $form->text('app_sign')->required();
             $form->text('mark');
-            $form->hidden('status');
+            $form->hidden('status')->default(1);
 
             $form->tools(function (Form\Tools $tools) {
                 // $tools->disableList();
