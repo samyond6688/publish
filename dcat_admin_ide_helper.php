@@ -36,11 +36,6 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection password
      * @property Grid\Column|Collection avatar
      * @property Grid\Column|Collection remember_token
-     * @property Grid\Column|Collection connection
-     * @property Grid\Column|Collection queue
-     * @property Grid\Column|Collection payload
-     * @property Grid\Column|Collection exception
-     * @property Grid\Column|Collection failed_at
      * @property Grid\Column|Collection developer
      * @property Grid\Column|Collection sign_id
      * @property Grid\Column|Collection cooperation_mode
@@ -50,15 +45,35 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection app_sign
      * @property Grid\Column|Collection status
      * @property Grid\Column|Collection mark
+     * @property Grid\Column|Collection connection
+     * @property Grid\Column|Collection queue
+     * @property Grid\Column|Collection payload
+     * @property Grid\Column|Collection exception
+     * @property Grid\Column|Collection failed_at
      * @property Grid\Column|Collection game_group_id
      * @property Grid\Column|Collection publisher_id
+     * @property Grid\Column|Collection adjust_channel
+     * @property Grid\Column|Collection media_id
+     * @property Grid\Column|Collection account
+     * @property Grid\Column|Collection account_id
+     * @property Grid\Column|Collection account_name
+     * @property Grid\Column|Collection agent_id
+     * @property Grid\Column|Collection company_id
+     * @property Grid\Column|Collection owner_id
+     * @property Grid\Column|Collection game_id
+     * @property Grid\Column|Collection package_name_id
+     * @property Grid\Column|Collection plugin_login
+     * @property Grid\Column|Collection plugin_pay
+     * @property Grid\Column|Collection plugin_type
+     * @property Grid\Column|Collection adjust_key
+     * @property Grid\Column|Collection petitioner
+     * @property Grid\Column|Collection plugin_params
      * @property Grid\Column|Collection email
      * @property Grid\Column|Collection token
      * @property Grid\Column|Collection e_mark
      * @property Grid\Column|Collection plugin_use
      * @property Grid\Column|Collection params
      * @property Grid\Column|Collection company
-     * @property Grid\Column|Collection account
      * @property Grid\Column|Collection site
      * @property Grid\Column|Collection admin
      * @property Grid\Column|Collection email_verified_at
@@ -88,11 +103,6 @@ namespace Dcat\Admin {
      * @method Grid\Column|Collection password(string $label = null)
      * @method Grid\Column|Collection avatar(string $label = null)
      * @method Grid\Column|Collection remember_token(string $label = null)
-     * @method Grid\Column|Collection connection(string $label = null)
-     * @method Grid\Column|Collection queue(string $label = null)
-     * @method Grid\Column|Collection payload(string $label = null)
-     * @method Grid\Column|Collection exception(string $label = null)
-     * @method Grid\Column|Collection failed_at(string $label = null)
      * @method Grid\Column|Collection developer(string $label = null)
      * @method Grid\Column|Collection sign_id(string $label = null)
      * @method Grid\Column|Collection cooperation_mode(string $label = null)
@@ -102,15 +112,35 @@ namespace Dcat\Admin {
      * @method Grid\Column|Collection app_sign(string $label = null)
      * @method Grid\Column|Collection status(string $label = null)
      * @method Grid\Column|Collection mark(string $label = null)
+     * @method Grid\Column|Collection connection(string $label = null)
+     * @method Grid\Column|Collection queue(string $label = null)
+     * @method Grid\Column|Collection payload(string $label = null)
+     * @method Grid\Column|Collection exception(string $label = null)
+     * @method Grid\Column|Collection failed_at(string $label = null)
      * @method Grid\Column|Collection game_group_id(string $label = null)
      * @method Grid\Column|Collection publisher_id(string $label = null)
+     * @method Grid\Column|Collection adjust_channel(string $label = null)
+     * @method Grid\Column|Collection media_id(string $label = null)
+     * @method Grid\Column|Collection account(string $label = null)
+     * @method Grid\Column|Collection account_id(string $label = null)
+     * @method Grid\Column|Collection account_name(string $label = null)
+     * @method Grid\Column|Collection agent_id(string $label = null)
+     * @method Grid\Column|Collection company_id(string $label = null)
+     * @method Grid\Column|Collection owner_id(string $label = null)
+     * @method Grid\Column|Collection game_id(string $label = null)
+     * @method Grid\Column|Collection package_name_id(string $label = null)
+     * @method Grid\Column|Collection plugin_login(string $label = null)
+     * @method Grid\Column|Collection plugin_pay(string $label = null)
+     * @method Grid\Column|Collection plugin_type(string $label = null)
+     * @method Grid\Column|Collection adjust_key(string $label = null)
+     * @method Grid\Column|Collection petitioner(string $label = null)
+     * @method Grid\Column|Collection plugin_params(string $label = null)
      * @method Grid\Column|Collection email(string $label = null)
      * @method Grid\Column|Collection token(string $label = null)
      * @method Grid\Column|Collection e_mark(string $label = null)
      * @method Grid\Column|Collection plugin_use(string $label = null)
      * @method Grid\Column|Collection params(string $label = null)
      * @method Grid\Column|Collection company(string $label = null)
-     * @method Grid\Column|Collection account(string $label = null)
      * @method Grid\Column|Collection site(string $label = null)
      * @method Grid\Column|Collection admin(string $label = null)
      * @method Grid\Column|Collection email_verified_at(string $label = null)
@@ -145,11 +175,6 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection password
      * @property Show\Field|Collection avatar
      * @property Show\Field|Collection remember_token
-     * @property Show\Field|Collection connection
-     * @property Show\Field|Collection queue
-     * @property Show\Field|Collection payload
-     * @property Show\Field|Collection exception
-     * @property Show\Field|Collection failed_at
      * @property Show\Field|Collection developer
      * @property Show\Field|Collection sign_id
      * @property Show\Field|Collection cooperation_mode
@@ -159,15 +184,35 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection app_sign
      * @property Show\Field|Collection status
      * @property Show\Field|Collection mark
+     * @property Show\Field|Collection connection
+     * @property Show\Field|Collection queue
+     * @property Show\Field|Collection payload
+     * @property Show\Field|Collection exception
+     * @property Show\Field|Collection failed_at
      * @property Show\Field|Collection game_group_id
      * @property Show\Field|Collection publisher_id
+     * @property Show\Field|Collection adjust_channel
+     * @property Show\Field|Collection media_id
+     * @property Show\Field|Collection account
+     * @property Show\Field|Collection account_id
+     * @property Show\Field|Collection account_name
+     * @property Show\Field|Collection agent_id
+     * @property Show\Field|Collection company_id
+     * @property Show\Field|Collection owner_id
+     * @property Show\Field|Collection game_id
+     * @property Show\Field|Collection package_name_id
+     * @property Show\Field|Collection plugin_login
+     * @property Show\Field|Collection plugin_pay
+     * @property Show\Field|Collection plugin_type
+     * @property Show\Field|Collection adjust_key
+     * @property Show\Field|Collection petitioner
+     * @property Show\Field|Collection plugin_params
      * @property Show\Field|Collection email
      * @property Show\Field|Collection token
      * @property Show\Field|Collection e_mark
      * @property Show\Field|Collection plugin_use
      * @property Show\Field|Collection params
      * @property Show\Field|Collection company
-     * @property Show\Field|Collection account
      * @property Show\Field|Collection site
      * @property Show\Field|Collection admin
      * @property Show\Field|Collection email_verified_at
@@ -197,11 +242,6 @@ namespace Dcat\Admin {
      * @method Show\Field|Collection password(string $label = null)
      * @method Show\Field|Collection avatar(string $label = null)
      * @method Show\Field|Collection remember_token(string $label = null)
-     * @method Show\Field|Collection connection(string $label = null)
-     * @method Show\Field|Collection queue(string $label = null)
-     * @method Show\Field|Collection payload(string $label = null)
-     * @method Show\Field|Collection exception(string $label = null)
-     * @method Show\Field|Collection failed_at(string $label = null)
      * @method Show\Field|Collection developer(string $label = null)
      * @method Show\Field|Collection sign_id(string $label = null)
      * @method Show\Field|Collection cooperation_mode(string $label = null)
@@ -211,15 +251,35 @@ namespace Dcat\Admin {
      * @method Show\Field|Collection app_sign(string $label = null)
      * @method Show\Field|Collection status(string $label = null)
      * @method Show\Field|Collection mark(string $label = null)
+     * @method Show\Field|Collection connection(string $label = null)
+     * @method Show\Field|Collection queue(string $label = null)
+     * @method Show\Field|Collection payload(string $label = null)
+     * @method Show\Field|Collection exception(string $label = null)
+     * @method Show\Field|Collection failed_at(string $label = null)
      * @method Show\Field|Collection game_group_id(string $label = null)
      * @method Show\Field|Collection publisher_id(string $label = null)
+     * @method Show\Field|Collection adjust_channel(string $label = null)
+     * @method Show\Field|Collection media_id(string $label = null)
+     * @method Show\Field|Collection account(string $label = null)
+     * @method Show\Field|Collection account_id(string $label = null)
+     * @method Show\Field|Collection account_name(string $label = null)
+     * @method Show\Field|Collection agent_id(string $label = null)
+     * @method Show\Field|Collection company_id(string $label = null)
+     * @method Show\Field|Collection owner_id(string $label = null)
+     * @method Show\Field|Collection game_id(string $label = null)
+     * @method Show\Field|Collection package_name_id(string $label = null)
+     * @method Show\Field|Collection plugin_login(string $label = null)
+     * @method Show\Field|Collection plugin_pay(string $label = null)
+     * @method Show\Field|Collection plugin_type(string $label = null)
+     * @method Show\Field|Collection adjust_key(string $label = null)
+     * @method Show\Field|Collection petitioner(string $label = null)
+     * @method Show\Field|Collection plugin_params(string $label = null)
      * @method Show\Field|Collection email(string $label = null)
      * @method Show\Field|Collection token(string $label = null)
      * @method Show\Field|Collection e_mark(string $label = null)
      * @method Show\Field|Collection plugin_use(string $label = null)
      * @method Show\Field|Collection params(string $label = null)
      * @method Show\Field|Collection company(string $label = null)
-     * @method Show\Field|Collection account(string $label = null)
      * @method Show\Field|Collection site(string $label = null)
      * @method Show\Field|Collection admin(string $label = null)
      * @method Show\Field|Collection email_verified_at(string $label = null)

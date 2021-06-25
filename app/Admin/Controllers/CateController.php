@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\GameGroup;
+use App\Models\Cate;
 use App\Models\CateTheme;
 use App\Models\CateType;
 use Dcat\Admin\Form;
@@ -11,18 +11,9 @@ use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
 use Dcat\Admin\Widgets\Card;
 use Dcat\Admin\Admin;
-use Dcat\Admin\Layout\Content;
 
-class GameGroupController extends AdminController
+class CateController extends AdminController
 {
-
-    // public function index(Content $content)
-    // {
-    //     return $content
-    //         ->header('123')
-    //         ->description('123')
-    //         ->body($this->grid());
-    // }
 
     /**
      * Make a grid builder.
@@ -31,11 +22,11 @@ class GameGroupController extends AdminController
      */
     protected function grid()
     {
-        return Grid::make(new GameGroup(), function (Grid $grid) {
+        return Grid::make(new Cate(), function (Grid $grid) {
             $grid->column('name');
-            $grid->column('developer')->using(GameGroup::$developerConfig);
-            $grid->column('sign_id')->using(GameGroup::$signConfig);
-            $grid->column('cooperation_mode')->using(GameGroup::$cooperationModeConfig);
+            $grid->column('developer')->using(Cate::$developerConfig);
+            $grid->column('sign_id')->using(Cate::$signConfig);
+            $grid->column('cooperation_mode')->using(Cate::$cooperationModeConfig);
             $grid->column('cate_theme_id')->display(function($id){
                 return CateTheme::find($id)->toArray()['name'];
             });
@@ -77,7 +68,7 @@ class GameGroupController extends AdminController
      */
     protected function detail($id)
     {
-        return Show::make($id, new GameGroup(), function (Show $show) {
+        return Show::make($id, new Cate(), function (Show $show) {
             $show->field('id');
             $show->field('name');
             $show->field('developer');
@@ -103,15 +94,15 @@ class GameGroupController extends AdminController
     {
         Admin::script($this->script());
 
-        return Form::make(new GameGroup(), function (Form $form) {
+        return Form::make(new Cate(), function (Form $form) {
             $form->text('name')->required();
-            $form->select('developer')->options(GameGroup::$developerConfig)->required();
-            $form->select('sign_id')->options(GameGroup::$signConfig)->required();
-            $form->select('cooperation_mode')->options(GameGroup::$cooperationModeConfig)->required();
+            $form->select('developer')->options(Cate::$developerConfig)->required();
+            $form->select('sign_id')->options(Cate::$signConfig)->required();
+            $form->select('cooperation_mode')->options(Cate::$cooperationModeConfig)->required();
             $form->select('cate_theme_id')->options(CateTheme::all()->pluck('name', 'id'))->required();
             $form->select('cate_type_id')->options(CateType::all()->pluck('name', 'id'))->required();
 
-             $form->text('game_secret')->append('&nbsp;&nbsp;<span class="input-group-btn"><button type="button" class="btn btn-primary shadow-0 add-secret">生成密钥</button></span>&nbsp;&nbsp;')->required();
+             $form->text('game_secret')->append('&nbsp;&nbsp;<span class="input-group-btn"><button type="button" class="btn btn-primary shadow-0 add-secret">生成密钥</button></span>&nbsp;&nbsp;')->required()->disable();
 
             $form->text('app_sign')->required();
             $form->text('mark');
@@ -134,8 +125,9 @@ class GameGroupController extends AdminController
         });
     }
 
-    protected function script(){
+    protected function script($str){
         return <<<JS
+
             $('.add-secret').click(function(){
                 var secrte = randomString();
                 $( "input[name='game_secret']").attr("value",secrte);
@@ -151,6 +143,6 @@ class GameGroupController extends AdminController
               }
               return pwd;
             }
-        JS;
+JS;
     }
 }

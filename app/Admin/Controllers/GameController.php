@@ -3,7 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Game;
-use App\Models\GameGroup;
+use App\Models\Cate;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -20,12 +20,12 @@ class GameController extends AdminController
     protected function grid()
     {
         return Grid::make(new Game(), function (Grid $grid) {
-            $grid->model()->with(['gameGroup']);
+            $grid->model()->with(['cate']);
             $grid->column('name');
             $grid->column('publisher_id')->using(Game::$publisherConfig);
             $grid->column('sign_id')->using(Game::$signConfig);
             $grid->column('cooperation_mode')->using(Game::$cooperationModeConfig);
-            $grid->column('gameGroup.name');
+            $grid->column('cate.name');
              $grid->column('其它信息')
             ->display('查看') // 设置按钮名称
             ->modal(function ($modal) {
@@ -44,7 +44,7 @@ class GameController extends AdminController
             $grid->column('mark');
 
             $grid->filter(function (Grid\Filter $filter) {
-                $filter->equal('game_group_id')->select(GameGroup::all()->pluck('name', 'id'))->width(3);;
+                $filter->equal('cate_id')->select(Cate::all()->pluck('name', 'id'))->width(3);;
                 $filter->equal('id')->select(Game::all()->pluck('name', 'id'))->width(3);;
 
             });
@@ -64,7 +64,7 @@ class GameController extends AdminController
         return Show::make($id, new Game(), function (Show $show) {
             $show->field('id');
             $show->field('name');
-            $show->field('game_group_id');
+            $show->field('cate_id');
             $show->field('publisher_id');
             $show->field('sign_id');
             $show->field('cooperation_mode');
@@ -83,7 +83,7 @@ class GameController extends AdminController
     {
         return Form::make(new Game(), function (Form $form) {
             $form->text('name')->required();
-            $form->select('game_group_id')->options(GameGroup::all()->pluck('name', 'id'))->required();
+            $form->select('cate_id')->options(Cate::all()->pluck('name', 'id'))->required();
             $form->select('publisher_id')->options(Game::$publisherConfig)->required();
             $form->select('sign_id')->options(Game::$signConfig)->required();
             $form->select('cooperation_mode')->options(Game::$cooperationModeConfig)->required();

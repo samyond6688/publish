@@ -10,6 +10,7 @@ class Plugin extends Model
     public static $nameConfig = [
         'google' => '谷歌[google]',
         'apple' => '苹果[apple]',
+        'facebook' => 'Facebook',
         'adjust' => 'adjust后台',
         'shushu' => '数数后台',
     ];

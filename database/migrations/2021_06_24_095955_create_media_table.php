@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGameGroupsTable extends Migration
+class CreateMediaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,10 @@ class CreateGameGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('game_groups', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->tinyInteger('developer');
-            $table->tinyInteger('sign_id');
-            $table->tinyInteger('cooperation_mode');
-            $table->smallInteger('cate_theme_id');
-            $table->smallInteger('cate_type_id');
-            $table->string('game_secret');
-            $table->string('app_sign');
+            $table->string('adjust_channel');
             $table->tinyInteger('status')->nullable()->default(1);
             $table->string('mark')->nullable();
             $table->timestamps();
@@ -36,6 +30,6 @@ class CreateGameGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('game_groups');
+        Schema::dropIfExists('media');
     }
 }

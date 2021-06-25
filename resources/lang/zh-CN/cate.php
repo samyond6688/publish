@@ -1,8 +1,8 @@
 <?php
 return [
     'labels' => [
-        'GameGroup' => '游戏组',
-        'game-group' => '游戏组',
+        'Cate' => '游戏组',
+        'cate' => '游戏组',
     ],
     'fields' => [
         'name' => '游戏组名称',

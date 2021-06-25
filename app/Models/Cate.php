@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GameGroup extends Model
+class Cate extends Model
 {
     protected $fillable = [
         'name', 'developer', 'sign_id','cooperation_mode','cate_theme_id','cate_type_id','game_secret','app_sign','status','mark'
@@ -30,6 +30,6 @@ class GameGroup extends Model
     ];
 
     public function games(){
-        return $this->hasMany(Game::class,'game_group_id');
+        return $this->hasMany(Game::class,'cate_id');
     }
 }

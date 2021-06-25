@@ -14,7 +14,7 @@ return [
         'game_secret' => '游戏秘钥',
         'status' => '状态',
         'mark' => '备注',
-        'gameGroup' =>['name' => '游戏组']
+        'cate' =>['name' => '游戏组']
     ],
     'options' => [
     ],

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Game extends Model
 {
     protected $fillable = [
-        'name', 'game_group_id', '','publisher_id','cooperation_mode','game_secret','app_sign','status','mark'
+        'name', 'cate_id', '','publisher_id','cooperation_mode','game_secret','app_sign','status','mark'
     ];
 
     public static $signConfig = [
@@ -29,7 +29,7 @@ class Game extends Model
         3 =>'发行商3',
     ];
 
-    public function gameGroup(){
-        return $this->belongsTo(GameGroup::class);
+    public function cate(){
+        return $this->belongsTo(Cate::class);
     }
 }
