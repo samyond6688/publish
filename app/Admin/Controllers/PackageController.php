@@ -7,9 +7,13 @@ use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
+use App\Models\Plugin;
 use App\Models\PluginParam;
 use App\Models\Game;
 use Dcat\Admin\Admin;
+use Dcat\Admin\Models\Administrator;
+use Dcat\Admin\Widgets\Card;
+use Illuminate\Http\Request;
 
 class PackageController extends AdminController
 {
@@ -21,24 +25,77 @@ class PackageController extends AdminController
     protected function grid()
     {
         return Grid::make(new Package(), function (Grid $grid) {
-            $grid->column('id')->sortable();
-            $grid->column('game_id');
-            $grid->column('name');
-            $grid->column('package_name_id');
-            $grid->column('plugin_login');
-            $grid->column('plugin_pay');
-            $grid->column('plugin_type');
-            $grid->column('adjust_key');
-            $grid->column('petitioner');
-            $grid->column('plugin_params');
-            $grid->column('status');
-            $grid->column('mark');
 
+            $grid->model()->with(['game']);
+            $grid->column('name')->display(function($value){
+                return $value."[".$this->id."]";
+            });
+
+            $grid->game('游戏id')->display(function($game){
+                return $game->name."[".$game->id."]";
+            });
+
+            $grid->column('plugin_login')->display(function($value){
+                $value = json_decode($value,true);
+                $plugin_name = PluginParam::whereIn('id',$value)->pluck('name')->toArray();
+                $str = '';
+                foreach ($plugin_name as  $code) {
+                    $str .= Plugin::$nameConfig[$code].",";
+                }
+                $str = rtrim($str,',');
+                return $str;
+            });
+
+            $grid->column('plugin_pay')->display(function($value){
+                $value = json_decode($value,true);
+                $plugin_name = PluginParam::whereIn('id',$value)->pluck('name')->toArray();
+                $str = '';
+                foreach ($plugin_name as  $code) {
+                    $str .= Plugin::$nameConfig[$code].",";
+                }
+                $str = rtrim($str,',');
+                return $str;
+            });
+
+            $grid->column('plugin_type')->using(PluginParam::$typeConfig);
+            $grid->column('petitioner');
+            $grid->column('plugin_params')->display('查看')->modal(function ($modal) {
+                // 设置弹窗标题
+                $modal->title('其它信息');
+
+                // 自定义图标
+                $modal->icon('');
+                $modal->xl();
+
+                $plugin_params = json_decode($this->plugin_params);
+                $html = "<div style='padding:10px 10px 0'>";
+                foreach ($plugin_params as $key => $params) {
+                    $html .= "<div style='margin:5px;'>";
+                    $html .= "<h4>".Plugin::$nameConfig[$key]."</h4>";
+                    foreach ($params as $k => $v) {
+                        $html .= "<div><span>".$k."：</span><span>".$v."</span></div>";
+                    }
+                    $html .= "</div>";
+                }
+                $html .= "</div>";
+
+                return "$html<div style='margin-top:15px;float:right'><a href='".route('dcat.admin.package.load',$this->id)."' target='_blank'>下载参数</a></div>";
+            });
+            $grid->column('status')->switch();
+            $grid->column('mark');
+            $grid->column('created_at');
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
 
             });
         });
+    }
+
+    public function load(Request $request){
+        $data = Package::find($request->package_id)->toArray();
+
+        $file_name = $data["name"]."_".PluginParam::$typeConfig[$data["plugin_type"]]."_info.txt";
+        return response()->download(realpath(base_path('public/uploads/').$file_name), $file_name);
     }
 
     /**
@@ -73,11 +130,14 @@ class PackageController extends AdminController
      */
     protected function form()
     {
-        $PluginParam = PluginParam::all()->toArray();
+        $class = $this;
+        $pluginParam = PluginParam::all()->toArray();
+        foreach ($pluginParam as $key => $value) {
+            $pluginParam[$key]['name_str'] =  Plugin::$nameConfig[$value['name']];
+        }
+        Admin::script($this->script(json_encode($pluginParam)));
 
-        Admin::script($this->script(json_encode($PluginParam)));
-
-        return Form::make(new Package(), function (Form $form) {
+        return Form::make(new Package(), function (Form $form) use ($pluginParam,$class) {
             $form->select('game_id')->options(Game::all()->pluck('name', 'id'))->required();
             $form->text('name')->required();
             $form->text('package_name_id')->required();
@@ -86,30 +146,113 @@ class PackageController extends AdminController
 
             $form->select('plugin_type')->options(PluginParam::$typeConfig)->required();
 
-            $form->multipleSelect('plugin_login')->options()->required();
-
-            $form->multipleSelect('plugin_pay')->options(PluginParam::whereRaw('JSON_CONTAINS(plugin_use,JSON_OBJECT("useType", "2"))')->pluck('name','id'))->saving(function ($value) {
+            $plugin_options = [];
+            if($form->isEditing()){
+                $pluginParamShow = [];
+                foreach ($pluginParam as $key => $value) {
+                    if($value['type'] == $form->model()->plugin_type){
+                        if(in_array('1', $value['plugin_use']) || in_array('2', $value['plugin_use'])){
+                            $plugin_options[$value['id']] = $value['name_str'];
+                            $pluginParamShow[] = $value['name'];
+                        }
+                    }
+                }
+                Admin::script($this->scriptEdit(json_encode($pluginParamShow)));
+            }
+            $form->multipleSelect('plugin_login')->options($plugin_options)->required()->saving(function ($value) {
                 // 转化成json字符串保存到数据库
                 return json_encode($value);
-            })->required();
-
-            $form->html(function (Form $form) {
-
-                return "<div class='gg-class'><h6>谷歌参数</h6>".$form->text('mark').$form->text('mark').$form->text('mark')."</div>";
             });
 
+            $form->multipleSelect('plugin_pay')->options($plugin_options)->required()->saving(function ($value) {
+                // 转化成json字符串保存到数据库
+                return json_encode($value);
+            });
+
+            $pluginParamsEdit = $form->model()->plugin_params;
+            if(!empty($pluginParamsEdit)) $pluginParamsEdit = json_decode($pluginParamsEdit,true);
+
+            foreach ($pluginParam as $key => $plugin) {
+               $code = $plugin['name'];
+               $name = $plugin['name_str'];
+               $params = array_column($plugin['params'], 'params_plugin') ;
+               $paramsNew = [];
+               foreach ($params as $v) {
+                   $paramsNew[$v] = '';
+               }
+               $paramsNew = $pluginParamsEdit[$code] ?? $paramsNew;
+
+               $plugin_use = $plugin['plugin_use'];
+               if(in_array(1,$plugin_use) || in_array(2,$plugin_use)){
+                    $form->embeds($code,"<span>".$name."</span>", function ($form) use($paramsNew) {
+                        foreach ($paramsNew as $key => $value) {
+                            $form->text($key)->value($value);
+                        }
+
+                    });
+               }
+            }
+
             $form->hidden('status')->default(1);
+            $form->hidden('petitioner')->value();
             $form->hidden('plugin_params')->default(null);
 
+            $form->saving(function (Form $form) use ($pluginParam) {
+                $plugin_params = [];
+                foreach ($pluginParam as $key => $value) {
+                    $code = $value['name'];
+                    if($params = $form->input($code)){
+                        foreach ($params as $k => $v) {
+                            if(!empty($v)){
+                                $plugin_params[$code] = $params;
+                                break;
+                            }
+                        }
+                        $form->deleteInput($code);
+                    }
+                }
+                $form->plugin_params = json_encode($plugin_params);
+                $form->petitioner = Admin::user()->name;
+
+
+            });
+
+
+            $form->saved(function (Form $form) use ($class) {
+                $data = $form->updates();
+                $class->saveInfo($data);
+            });
 
         });
+    }
+
+    public function saveInfo($data){
+        $str = "";
+        $str .= "游戏名：".$data["name"]."\r\n\r\n";
+        $str .= "插件类型：".PluginParam::$typeConfig[$data["plugin_type"]]."\r\n\r\n";
+        $str .= "包名：".$data["package_name_id"]."\r\n\r\n";
+        $str .= "Adjust秘钥：".$data["adjust_key"]."\r\n\r\n";
+        $str .= "插件参数：\r\n";
+        $plugin_params = json_decode($data["plugin_params"],true);
+        foreach ($plugin_params as $key => $params) {
+            $str .= "【".Plugin::$nameConfig[$key]."】\r\n";
+
+            foreach ($params as $k => $v) {
+                $str .= $k."：".$v."\r\n";
+            }
+            $str .= "\r\n";
+        }
+
+        $file_name = $data["name"]."_".PluginParam::$typeConfig[$data["plugin_type"]]."_info.txt";
+        file_put_contents(base_path("public/uploads/".$file_name), $str);
     }
 
     protected function script($pluginParam){
         return <<<JS
             var pluginParam = $pluginParam;
-
+            hideAll(pluginParam)
             $('select[name="plugin_type"]').change(function(){
+                hideAll(pluginParam)
                 var pluginLoginHtml = '';
                 var pluginPayHtml = '';
 
@@ -138,6 +281,7 @@ class PackageController extends AdminController
 
             //判断选择内容
             $('select[name="plugin_login[]"],select[name="plugin_pay[]"]').change(function(){
+                hideAll(pluginParam)
                 let plugin = []
                 let pluginLogin = $('select[name="plugin_login[]"]').val()
                 let pluginPay = $('select[name="plugin_pay[]"]').val()
@@ -161,19 +305,34 @@ class PackageController extends AdminController
                 for(let i = 0; i < plugin.length; i++) {
                       for(let j = 0; j < pluginParam.length; j++) {
                         if(plugin[i] == pluginParam[j].id){
-                            let pluginName = pluginParam[j].name
-                            let pluginId = pluginParam[j].id
-                            let params = pluginParam[j].params
-                            for(let k =0;k < params.length; k++){
-                                let = params[k].params_plugin
-
-                            }
+                            let code = pluginParam[j].name
+                            $('#embed-'+code).show();
                         }
                       }
                 }
 
             })
 
+            function hideAll(pluginParam){
+                if(pluginParam.length > 0){
+                    for(let i = 0; i < pluginParam.length; i++) {
+                        let code = pluginParam[i].name
+                        $('#embed-'+code).hide();
+                    }
+                }
+            }
+
+JS;
+    }
+
+    protected function scriptEdit($pluginParamShow){
+        return <<<JS
+        var pluginParamShow = $pluginParamShow;
+        if(pluginParamShow.length > 0){
+            for(let i = 0; i < pluginParamShow.length; i++) {
+                $('#embed-'+pluginParamShow[i]).show();
+            }
+        }
 JS;
     }
 }

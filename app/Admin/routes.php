@@ -21,5 +21,5 @@ Route::group([
     $router->resource('media', 'MediumController');
     $router->resource('medium_accounts', 'MediumAccountController');
     $router->resource('packages', 'PackageController');
-
+    $router->get('packages/{package_id}/load', 'PackageController@load')->name('package.load');
 });

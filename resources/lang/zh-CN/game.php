@@ -5,6 +5,7 @@ return [
         'game' => '游戏',
     ],
     'fields' => [
+        'game_id' => '游戏id',
         'id' => '游戏ID',
         'name' => '游戏名称',
         'game_group_id' => '游戏组ID',

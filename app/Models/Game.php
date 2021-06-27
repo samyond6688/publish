@@ -32,4 +32,8 @@ class Game extends Model
     public function cate(){
         return $this->belongsTo(Cate::class);
     }
+
+    public function packages(){
+        return $this->hasMany(Package::class);
+    }
 }
