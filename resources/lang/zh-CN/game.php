@@ -7,6 +7,7 @@ return [
     'fields' => [
         'game_id' => '游戏id',
         'id' => '游戏ID',
+        'cate_id' => '游戏组',
         'name' => '游戏名称',
         'game_group_id' => '游戏组ID',
         'publisher_id' => '发行商',
