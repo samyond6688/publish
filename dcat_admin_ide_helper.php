@@ -11,6 +11,7 @@ namespace Dcat\Admin {
     use Illuminate\Support\Collection;
 
     /**
+     * @property Grid\Column|Collection game
      * @property Grid\Column|Collection id
      * @property Grid\Column|Collection name
      * @property Grid\Column|Collection type
@@ -50,13 +51,14 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection payload
      * @property Grid\Column|Collection exception
      * @property Grid\Column|Collection failed_at
-     * @property Grid\Column|Collection game_group_id
+     * @property Grid\Column|Collection cate_id
      * @property Grid\Column|Collection publisher_id
      * @property Grid\Column|Collection adjust_channel
      * @property Grid\Column|Collection media_id
      * @property Grid\Column|Collection account
      * @property Grid\Column|Collection account_id
      * @property Grid\Column|Collection account_name
+     * @property Grid\Column|Collection tracker
      * @property Grid\Column|Collection agent_id
      * @property Grid\Column|Collection company_id
      * @property Grid\Column|Collection owner_id
@@ -76,8 +78,17 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection company
      * @property Grid\Column|Collection site
      * @property Grid\Column|Collection admin
+     * @property Grid\Column|Collection ad_name
+     * @property Grid\Column|Collection adj_fb_account_id
+     * @property Grid\Column|Collection adj_tracker
+     * @property Grid\Column|Collection adj_app_name
+     * @property Grid\Column|Collection adj_network_name
+     * @property Grid\Column|Collection adj_campaign_id
+     * @property Grid\Column|Collection adj_ad_id
+     * @property Grid\Column|Collection adj_creative_id
      * @property Grid\Column|Collection email_verified_at
      *
+     * @method Grid\Column|Collection game(string $label = null)
      * @method Grid\Column|Collection id(string $label = null)
      * @method Grid\Column|Collection name(string $label = null)
      * @method Grid\Column|Collection type(string $label = null)
@@ -117,13 +128,14 @@ namespace Dcat\Admin {
      * @method Grid\Column|Collection payload(string $label = null)
      * @method Grid\Column|Collection exception(string $label = null)
      * @method Grid\Column|Collection failed_at(string $label = null)
-     * @method Grid\Column|Collection game_group_id(string $label = null)
+     * @method Grid\Column|Collection cate_id(string $label = null)
      * @method Grid\Column|Collection publisher_id(string $label = null)
      * @method Grid\Column|Collection adjust_channel(string $label = null)
      * @method Grid\Column|Collection media_id(string $label = null)
      * @method Grid\Column|Collection account(string $label = null)
      * @method Grid\Column|Collection account_id(string $label = null)
      * @method Grid\Column|Collection account_name(string $label = null)
+     * @method Grid\Column|Collection tracker(string $label = null)
      * @method Grid\Column|Collection agent_id(string $label = null)
      * @method Grid\Column|Collection company_id(string $label = null)
      * @method Grid\Column|Collection owner_id(string $label = null)
@@ -143,6 +155,14 @@ namespace Dcat\Admin {
      * @method Grid\Column|Collection company(string $label = null)
      * @method Grid\Column|Collection site(string $label = null)
      * @method Grid\Column|Collection admin(string $label = null)
+     * @method Grid\Column|Collection ad_name(string $label = null)
+     * @method Grid\Column|Collection adj_fb_account_id(string $label = null)
+     * @method Grid\Column|Collection adj_tracker(string $label = null)
+     * @method Grid\Column|Collection adj_app_name(string $label = null)
+     * @method Grid\Column|Collection adj_network_name(string $label = null)
+     * @method Grid\Column|Collection adj_campaign_id(string $label = null)
+     * @method Grid\Column|Collection adj_ad_id(string $label = null)
+     * @method Grid\Column|Collection adj_creative_id(string $label = null)
      * @method Grid\Column|Collection email_verified_at(string $label = null)
      */
     class Grid {}
@@ -150,6 +170,7 @@ namespace Dcat\Admin {
     class MiniGrid extends Grid {}
 
     /**
+     * @property Show\Field|Collection game
      * @property Show\Field|Collection id
      * @property Show\Field|Collection name
      * @property Show\Field|Collection type
@@ -189,13 +210,14 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection payload
      * @property Show\Field|Collection exception
      * @property Show\Field|Collection failed_at
-     * @property Show\Field|Collection game_group_id
+     * @property Show\Field|Collection cate_id
      * @property Show\Field|Collection publisher_id
      * @property Show\Field|Collection adjust_channel
      * @property Show\Field|Collection media_id
      * @property Show\Field|Collection account
      * @property Show\Field|Collection account_id
      * @property Show\Field|Collection account_name
+     * @property Show\Field|Collection tracker
      * @property Show\Field|Collection agent_id
      * @property Show\Field|Collection company_id
      * @property Show\Field|Collection owner_id
@@ -215,8 +237,17 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection company
      * @property Show\Field|Collection site
      * @property Show\Field|Collection admin
+     * @property Show\Field|Collection ad_name
+     * @property Show\Field|Collection adj_fb_account_id
+     * @property Show\Field|Collection adj_tracker
+     * @property Show\Field|Collection adj_app_name
+     * @property Show\Field|Collection adj_network_name
+     * @property Show\Field|Collection adj_campaign_id
+     * @property Show\Field|Collection adj_ad_id
+     * @property Show\Field|Collection adj_creative_id
      * @property Show\Field|Collection email_verified_at
      *
+     * @method Show\Field|Collection game(string $label = null)
      * @method Show\Field|Collection id(string $label = null)
      * @method Show\Field|Collection name(string $label = null)
      * @method Show\Field|Collection type(string $label = null)
@@ -256,13 +287,14 @@ namespace Dcat\Admin {
      * @method Show\Field|Collection payload(string $label = null)
      * @method Show\Field|Collection exception(string $label = null)
      * @method Show\Field|Collection failed_at(string $label = null)
-     * @method Show\Field|Collection game_group_id(string $label = null)
+     * @method Show\Field|Collection cate_id(string $label = null)
      * @method Show\Field|Collection publisher_id(string $label = null)
      * @method Show\Field|Collection adjust_channel(string $label = null)
      * @method Show\Field|Collection media_id(string $label = null)
      * @method Show\Field|Collection account(string $label = null)
      * @method Show\Field|Collection account_id(string $label = null)
      * @method Show\Field|Collection account_name(string $label = null)
+     * @method Show\Field|Collection tracker(string $label = null)
      * @method Show\Field|Collection agent_id(string $label = null)
      * @method Show\Field|Collection company_id(string $label = null)
      * @method Show\Field|Collection owner_id(string $label = null)
@@ -282,6 +314,14 @@ namespace Dcat\Admin {
      * @method Show\Field|Collection company(string $label = null)
      * @method Show\Field|Collection site(string $label = null)
      * @method Show\Field|Collection admin(string $label = null)
+     * @method Show\Field|Collection ad_name(string $label = null)
+     * @method Show\Field|Collection adj_fb_account_id(string $label = null)
+     * @method Show\Field|Collection adj_tracker(string $label = null)
+     * @method Show\Field|Collection adj_app_name(string $label = null)
+     * @method Show\Field|Collection adj_network_name(string $label = null)
+     * @method Show\Field|Collection adj_campaign_id(string $label = null)
+     * @method Show\Field|Collection adj_ad_id(string $label = null)
+     * @method Show\Field|Collection adj_creative_id(string $label = null)
      * @method Show\Field|Collection email_verified_at(string $label = null)
      */
     class Show {}

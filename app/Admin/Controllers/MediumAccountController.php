@@ -40,6 +40,7 @@ class MediumAccountController extends AdminController
 
             $grid->column('account_id');
             $grid->column('account_name');
+            $grid->column('tracker');
             $grid->column('agent_id')->using(MediumAccount::$agentConfig);
             $grid->column('company_id')->using(MediumAccount::$companyConfig);
             $grid->column('owner_id')->display(function($value){
@@ -93,19 +94,48 @@ class MediumAccountController extends AdminController
      */
     protected function form()
     {
-        return Form::make(new MediumAccount(), function (Form $form) {
+        $class = $this;
+        return Form::make(new MediumAccount(), function (Form $form) use ($class) {
+
             $form->select('media_id')->options(Medium::all()->pluck('name', 'id'))->required();
             $form->select('type')->options(MediumAccount::$typeConfig)->required();
             $form->text('account')->required();
             $form->text('password')->required();
             $form->text('account_id');
             $form->text('account_name');
+            if($form->isCreating()){
+                $tracker = $class->getTracker();
+            }
+
+            if($form->isEditing()){
+                $tracker = $form->model()->tracker;
+            }
+
+
+            $form->text('tracker')->value($tracker)->disable();
+
+
             $form->select('agent_id')->options(MediumAccount::$agentConfig)->required();
             $form->select('company_id')->options(MediumAccount::$companyConfig)->required();
             $form->select('owner_id')->options(Administrator::all()->pluck('name', 'id'))->required();
             $form->hidden('status')->default(1);
             $form->text('mark');
 
+            $form->saving(function(Form $form){
+                print_r($form->input());
+            });
+
         });
+    }
+
+    protected function getTracker(){
+        for ($i=0; $i < 20; $i++){
+            $tracker = getRandomString(3);
+            if(!MediumAccount::where('tracker',$tracker)->first()){
+                return $tracker;
+                break;
+            }
+            break;
+        }
     }
 }

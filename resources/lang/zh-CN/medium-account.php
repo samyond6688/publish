@@ -12,6 +12,7 @@ return [
         'password' => '密码',
         'account_id' => '账号id',
         'account_name' => '广告主名称',
+        'tracker' => '跟踪码',
         'agent_id' => '代理',
         'company_id' => '公司主体',
         'owner_id' => '归属人',

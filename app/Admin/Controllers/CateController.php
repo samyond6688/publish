@@ -125,7 +125,7 @@ class CateController extends AdminController
         });
     }
 
-    protected function script($str){
+    protected function script(){
         return <<<JS
 
             $('.add-secret').click(function(){
