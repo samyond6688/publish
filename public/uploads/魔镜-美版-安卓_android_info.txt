@@ -1,0 +1,16 @@
+游戏名：魔镜-美版-安卓
+
+插件类型：android
+
+包名：com.mjwy1401.onrepx
+
+Adjust秘钥：asdfsdfsdf
+
+插件参数：
+【谷歌[google]】
+appId：asdfasdf
+appKey：asdfasdf
+
+【Facebook】
+client_id：sdafsadf
+

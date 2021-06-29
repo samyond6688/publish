@@ -7,6 +7,10 @@ use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
+use App\Models\Package;
+use App\Models\MediumAccount;
+use App\Models\PluginParam;
+use Dcat\Admin\Models\Administrator;
 
 class ServingPlanController extends AdminController
 {
@@ -18,57 +22,48 @@ class ServingPlanController extends AdminController
     protected function grid()
     {
         return Grid::make(new ServingPlan(), function (Grid $grid) {
+
+            $grid->model()->orderBy('id', 'desc');
             $grid->column('id')->sortable();
             $grid->column('ad_name');
-            $grid->column('adj_app_name');
-            $grid->column('status');
-            $grid->column('mark');
-            $grid->column('created_at');
-            $grid->column('updated_at')->sortable();
-        
-            $grid->filter(function (Grid\Filter $filter) {
-                $filter->equal('id');
-        
+
+            $grid->column('投放媒体')->display(function($value){
+                 return empty($this->mediumAccount()) ? "自然量" : $this->mediumAccount()->medium->name;
             });
-        });
-    }
 
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     *
-     * @return Show
-     */
-    protected function detail($id)
-    {
-        return Show::make($id, new ServingPlan(), function (Show $show) {
-            $show->field('id');
-            $show->field('ad_name');
-            $show->field('adj_app_name');
-            $show->field('status');
-            $show->field('mark');
-            $show->field('created_at');
-            $show->field('updated_at');
-        });
-    }
+            $grid->column('媒体账号')->display(function($value){
+                 return empty($this->mediumAccount()) ? "自然量" : $this->mediumAccount()->account;
+            });
 
-    /**
-     * Make a form builder.
-     *
-     * @return Form
-     */
-    protected function form()
-    {
-        return Form::make(new ServingPlan(), function (Form $form) {
-            $form->display('id');
-            $form->text('ad_name');
-            $form->text('adj_app_name');
-            $form->text('status');
-            $form->text('mark');
-        
-            $form->display('created_at');
-            $form->display('updated_at');
+            $grid->column('账号id')->display(function($value){
+                 return empty($this->mediumAccount()) ? "自然量" : $this->mediumAccount()->account_id;
+            });
+
+            $grid->column('游戏')->display(function($value){
+                 return $this->package()->name;
+            });
+
+            $grid->column('adj_app_name');
+
+            $grid->column('系统')->display(function($value){
+                 return PluginParam::$typeConfig[$this->package()->plugin_type];
+            });
+
+            $grid->column('归属人')->display(function($value){
+                return empty($this->mediumAccount()) ? "自然量" : Administrator::find($this->mediumAccount()->owner_id)->name;
+            });
+
+            $grid->column('created_at');
+
+            $grid->column('mark');
+
+            $grid->disableActions();//禁用操作
+            $grid->disableCreateButton();//禁用新增按钮
+
+            $grid->filter(function (Grid\Filter $filter) {
+                $filter->equal('id')->width(3);
+
+            });
         });
     }
 }

@@ -15,7 +15,7 @@ class CreateServingPlansTable extends Migration
     {
         Schema::create('serving_plans', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('ad_name')->comment('广告名称');
+            $table->string('ad_name')->comment('广告名称')->nullable();
             $table->string('adj_fb_account_id')->nullable()->comment('账号ID，FB投放才有的');
             $table->string('adj_tracker')->nullable()->comment('追踪码');
             $table->string('adj_app_name')->comment('游戏包名');
@@ -28,7 +28,7 @@ class CreateServingPlansTable extends Migration
             $table->timestamps();
         });
 
-        \Illuminate\Support\Facades\DB::statement("ALTER TABLE serving_plans AUTO_INCREMENT=10000");
+        \Illuminate\Support\Facades\DB::update("ALTER TABLE serving_plans AUTO_INCREMENT=10000");
     }
 
     /**

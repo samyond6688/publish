@@ -10,6 +10,7 @@ use Dcat\Admin\Http\Controllers\AdminController;
 use App\Models\Plugin;
 use App\Models\PluginParam;
 use App\Models\Game;
+use App\Models\ServingPlan;
 use Dcat\Admin\Admin;
 use Dcat\Admin\Models\Administrator;
 use Dcat\Admin\Widgets\Card;
@@ -93,9 +94,9 @@ class PackageController extends AdminController
 
     public function load(Request $request){
         $data = Package::find($request->package_id)->toArray();
-
-        $file_name = $data["name"]."_".PluginParam::$typeConfig[$data["plugin_type"]]."_info.txt";
-        return response()->download(realpath(base_path('public/uploads/').$file_name), $file_name);
+        $fileName = $data["name"]."_".PluginParam::$typeConfig[$data["plugin_type"]]."_info.txt";
+        $this->saveInfo($data,$fileName);
+        return response()->download(realpath(base_path('public/uploads/').$fileName), $fileName);
     }
 
     /**
@@ -130,14 +131,13 @@ class PackageController extends AdminController
      */
     protected function form()
     {
-        $class = $this;
         $pluginParam = PluginParam::all()->toArray();
         foreach ($pluginParam as $key => $value) {
             $pluginParam[$key]['name_str'] =  Plugin::$nameConfig[$value['name']];
         }
         Admin::script($this->script(json_encode($pluginParam)));
 
-        return Form::make(new Package(), function (Form $form) use ($pluginParam,$class) {
+        return Form::make(new Package(), function (Form $form) use ($pluginParam) {
             $form->select('game_id')->options(Game::all()->pluck('name', 'id'))->required();
             $form->text('name')->required();
             $form->text('package_name_id')->required();
@@ -218,15 +218,17 @@ class PackageController extends AdminController
             });
 
 
-            $form->saved(function (Form $form) use ($class) {
+            $form->saved(function (Form $form) {
                 $data = $form->updates();
-                $class->saveInfo($data);
+
+                //添加自然量投放计划
+                ServingPlan::create(['adj_app_name' => $data['package_name_id']]);
             });
 
         });
     }
 
-    public function saveInfo($data){
+    public function saveInfo($data,$fileName){
         $str = "";
         $str .= "游戏名：".$data["name"]."\r\n\r\n";
         $str .= "插件类型：".PluginParam::$typeConfig[$data["plugin_type"]]."\r\n\r\n";
@@ -243,8 +245,7 @@ class PackageController extends AdminController
             $str .= "\r\n";
         }
 
-        $file_name = $data["name"]."_".PluginParam::$typeConfig[$data["plugin_type"]]."_info.txt";
-        file_put_contents(base_path("public/uploads/".$file_name), $str);
+        file_put_contents(base_path("public/uploads/".$fileName), $str);
     }
 
     protected function script($pluginParam){

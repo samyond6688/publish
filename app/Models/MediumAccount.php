@@ -28,7 +28,7 @@ class MediumAccount extends Model
         3 =>'腾讯',
     ];
 
-    public function media(){
+    public function medium(){
         return $this->belongsTo(Medium::class);
     }
 

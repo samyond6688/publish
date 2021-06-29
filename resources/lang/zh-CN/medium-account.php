@@ -5,8 +5,8 @@ return [
         'medium-account' => 'MediumAccount',
     ],
     'fields' => [
-        'media' =>['name' => '媒体'],
-        'media_id' => '媒体',
+        'medium' =>['name' => '媒体'],
+        'medium_id' => '媒体',
         'type' => '账号类型',
         'account' => '媒体账号',
         'password' => '密码',

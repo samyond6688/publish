@@ -102,7 +102,14 @@ class CateController extends AdminController
             $form->select('cate_theme_id')->options(CateTheme::all()->pluck('name', 'id'))->required();
             $form->select('cate_type_id')->options(CateType::all()->pluck('name', 'id'))->required();
 
-             $form->text('game_secret')->append('&nbsp;&nbsp;<span class="input-group-btn"><button type="button" class="btn btn-primary shadow-0 add-secret">生成密钥</button></span>&nbsp;&nbsp;')->required()->disable();
+            if($form->isCreating()){
+                $form->text('game_secret')->append('&nbsp;&nbsp;<span class="input-group-btn"><button type="button" class="btn btn-primary shadow-0 add-secret">生成密钥</button></span>&nbsp;&nbsp;')->required();
+            }
+
+            if($form->isEditing()){
+                $form->text('game_secret')->disable();
+            }
+
 
             $form->text('app_sign')->required();
             $form->text('mark');

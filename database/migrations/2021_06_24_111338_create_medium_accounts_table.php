@@ -22,6 +22,7 @@ class CreateMediumAccountsTable extends Migration
             $table->string('password');
             $table->string('account_id')->nullable();
             $table->string('account_name')->nullable();
+            $table->string('tracker')->nullable();
             $table->smallInteger('agent_id');
             $table->smallInteger('company_id');
             $table->string('owner')->nullable();

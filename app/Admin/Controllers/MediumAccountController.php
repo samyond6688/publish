@@ -21,8 +21,8 @@ class MediumAccountController extends AdminController
     protected function grid()
     {
         return Grid::make(new MediumAccount(), function (Grid $grid) {
-            $grid->model()->with(['media']);
-            $grid->column('media.name');
+            $grid->model()->with(['medium']);
+            $grid->column('medium.name');
             $grid->column('type')->using(MediumAccount::$typeConfig);
             $grid->column('account');
             $grid->column('password')->display('查看') // 设置按钮名称
@@ -55,7 +55,7 @@ class MediumAccountController extends AdminController
                 $filter->equal('type')->select(MediumAccount::$typeConfig)->width(3);
                 $filter->equal('owner_id')->select(Administrator::all()->pluck('name', 'id'))->width(3);
                 $filter->equal('company_id')->select(MediumAccount::$companyConfig)->width(3);
-                $filter->equal('media_id')->select(Medium::all()->pluck('name', 'id'))->width(3);
+                $filter->equal('medium_id')->select(Medium::all()->pluck('name', 'id'))->width(3);
             });
         });
     }
@@ -71,7 +71,7 @@ class MediumAccountController extends AdminController
     {
         return Show::make($id, new MediumAccount(), function (Show $show) {
             $show->field('id');
-            $show->field('media_id');
+            $show->field('medium_id');
             $show->field('type');
             $show->field('account');
             $show->field('password');
@@ -97,7 +97,7 @@ class MediumAccountController extends AdminController
         $class = $this;
         return Form::make(new MediumAccount(), function (Form $form) use ($class) {
 
-            $form->select('media_id')->options(Medium::all()->pluck('name', 'id'))->required();
+            $form->select('medium_id')->options(Medium::all()->pluck('name', 'id'))->required();
             $form->select('type')->options(MediumAccount::$typeConfig)->required();
             $form->text('account')->required();
             $form->text('password')->required();
@@ -105,25 +105,18 @@ class MediumAccountController extends AdminController
             $form->text('account_name');
             if($form->isCreating()){
                 $tracker = $class->getTracker();
+                $form->text('tracker')->value($tracker);
             }
 
             if($form->isEditing()){
-                $tracker = $form->model()->tracker;
+                $form->text('tracker')->disable();
             }
-
-
-            $form->text('tracker')->value($tracker)->disable();
-
 
             $form->select('agent_id')->options(MediumAccount::$agentConfig)->required();
             $form->select('company_id')->options(MediumAccount::$companyConfig)->required();
             $form->select('owner_id')->options(Administrator::all()->pluck('name', 'id'))->required();
             $form->hidden('status')->default(1);
             $form->text('mark');
-
-            $form->saving(function(Form $form){
-                print_r($form->input());
-            });
 
         });
     }

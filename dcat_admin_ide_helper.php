@@ -54,7 +54,7 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection cate_id
      * @property Grid\Column|Collection publisher_id
      * @property Grid\Column|Collection adjust_channel
-     * @property Grid\Column|Collection media_id
+     * @property Grid\Column|Collection medium_id
      * @property Grid\Column|Collection account
      * @property Grid\Column|Collection account_id
      * @property Grid\Column|Collection account_name
@@ -87,6 +87,35 @@ namespace Dcat\Admin {
      * @property Grid\Column|Collection adj_ad_id
      * @property Grid\Column|Collection adj_creative_id
      * @property Grid\Column|Collection email_verified_at
+     * @property Grid\Column|Collection order_id
+     * @property Grid\Column|Collection product_id
+     * @property Grid\Column|Collection open_id
+     * @property Grid\Column|Collection package_id
+     * @property Grid\Column|Collection udid
+     * @property Grid\Column|Collection adid
+     * @property Grid\Column|Collection role_name
+     * @property Grid\Column|Collection role_level
+     * @property Grid\Column|Collection game_order_id
+     * @property Grid\Column|Collection pay_amout_str
+     * @property Grid\Column|Collection pay_amout
+     * @property Grid\Column|Collection product_amout
+     * @property Grid\Column|Collection game_product_id
+     * @property Grid\Column|Collection currency_type
+     * @property Grid\Column|Collection pay_status
+     * @property Grid\Column|Collection pay_type
+     * @property Grid\Column|Collection pay_no
+     * @property Grid\Column|Collection ip
+     * @property Grid\Column|Collection ext
+     * @property Grid\Column|Collection gg_ext
+     * @property Grid\Column|Collection pay_finish_time
+     * @property Grid\Column|Collection callcakc_success_time
+     * @property Grid\Column|Collection created_date
+     * @property Grid\Column|Collection gc_openid
+     * @property Grid\Column|Collection gg_openid
+     * @property Grid\Column|Collection oauth_code
+     * @property Grid\Column|Collection login_type
+     * @property Grid\Column|Collection last_login_ip
+     * @property Grid\Column|Collection last_login_time
      *
      * @method Grid\Column|Collection game(string $label = null)
      * @method Grid\Column|Collection id(string $label = null)
@@ -131,7 +160,7 @@ namespace Dcat\Admin {
      * @method Grid\Column|Collection cate_id(string $label = null)
      * @method Grid\Column|Collection publisher_id(string $label = null)
      * @method Grid\Column|Collection adjust_channel(string $label = null)
-     * @method Grid\Column|Collection media_id(string $label = null)
+     * @method Grid\Column|Collection medium_id(string $label = null)
      * @method Grid\Column|Collection account(string $label = null)
      * @method Grid\Column|Collection account_id(string $label = null)
      * @method Grid\Column|Collection account_name(string $label = null)
@@ -164,6 +193,35 @@ namespace Dcat\Admin {
      * @method Grid\Column|Collection adj_ad_id(string $label = null)
      * @method Grid\Column|Collection adj_creative_id(string $label = null)
      * @method Grid\Column|Collection email_verified_at(string $label = null)
+     * @method Grid\Column|Collection order_id(string $label = null)
+     * @method Grid\Column|Collection product_id(string $label = null)
+     * @method Grid\Column|Collection open_id(string $label = null)
+     * @method Grid\Column|Collection package_id(string $label = null)
+     * @method Grid\Column|Collection udid(string $label = null)
+     * @method Grid\Column|Collection adid(string $label = null)
+     * @method Grid\Column|Collection role_name(string $label = null)
+     * @method Grid\Column|Collection role_level(string $label = null)
+     * @method Grid\Column|Collection game_order_id(string $label = null)
+     * @method Grid\Column|Collection pay_amout_str(string $label = null)
+     * @method Grid\Column|Collection pay_amout(string $label = null)
+     * @method Grid\Column|Collection product_amout(string $label = null)
+     * @method Grid\Column|Collection game_product_id(string $label = null)
+     * @method Grid\Column|Collection currency_type(string $label = null)
+     * @method Grid\Column|Collection pay_status(string $label = null)
+     * @method Grid\Column|Collection pay_type(string $label = null)
+     * @method Grid\Column|Collection pay_no(string $label = null)
+     * @method Grid\Column|Collection ip(string $label = null)
+     * @method Grid\Column|Collection ext(string $label = null)
+     * @method Grid\Column|Collection gg_ext(string $label = null)
+     * @method Grid\Column|Collection pay_finish_time(string $label = null)
+     * @method Grid\Column|Collection callcakc_success_time(string $label = null)
+     * @method Grid\Column|Collection created_date(string $label = null)
+     * @method Grid\Column|Collection gc_openid(string $label = null)
+     * @method Grid\Column|Collection gg_openid(string $label = null)
+     * @method Grid\Column|Collection oauth_code(string $label = null)
+     * @method Grid\Column|Collection login_type(string $label = null)
+     * @method Grid\Column|Collection last_login_ip(string $label = null)
+     * @method Grid\Column|Collection last_login_time(string $label = null)
      */
     class Grid {}
 
@@ -213,7 +271,7 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection cate_id
      * @property Show\Field|Collection publisher_id
      * @property Show\Field|Collection adjust_channel
-     * @property Show\Field|Collection media_id
+     * @property Show\Field|Collection medium_id
      * @property Show\Field|Collection account
      * @property Show\Field|Collection account_id
      * @property Show\Field|Collection account_name
@@ -246,6 +304,35 @@ namespace Dcat\Admin {
      * @property Show\Field|Collection adj_ad_id
      * @property Show\Field|Collection adj_creative_id
      * @property Show\Field|Collection email_verified_at
+     * @property Show\Field|Collection order_id
+     * @property Show\Field|Collection product_id
+     * @property Show\Field|Collection open_id
+     * @property Show\Field|Collection package_id
+     * @property Show\Field|Collection udid
+     * @property Show\Field|Collection adid
+     * @property Show\Field|Collection role_name
+     * @property Show\Field|Collection role_level
+     * @property Show\Field|Collection game_order_id
+     * @property Show\Field|Collection pay_amout_str
+     * @property Show\Field|Collection pay_amout
+     * @property Show\Field|Collection product_amout
+     * @property Show\Field|Collection game_product_id
+     * @property Show\Field|Collection currency_type
+     * @property Show\Field|Collection pay_status
+     * @property Show\Field|Collection pay_type
+     * @property Show\Field|Collection pay_no
+     * @property Show\Field|Collection ip
+     * @property Show\Field|Collection ext
+     * @property Show\Field|Collection gg_ext
+     * @property Show\Field|Collection pay_finish_time
+     * @property Show\Field|Collection callcakc_success_time
+     * @property Show\Field|Collection created_date
+     * @property Show\Field|Collection gc_openid
+     * @property Show\Field|Collection gg_openid
+     * @property Show\Field|Collection oauth_code
+     * @property Show\Field|Collection login_type
+     * @property Show\Field|Collection last_login_ip
+     * @property Show\Field|Collection last_login_time
      *
      * @method Show\Field|Collection game(string $label = null)
      * @method Show\Field|Collection id(string $label = null)
@@ -290,7 +377,7 @@ namespace Dcat\Admin {
      * @method Show\Field|Collection cate_id(string $label = null)
      * @method Show\Field|Collection publisher_id(string $label = null)
      * @method Show\Field|Collection adjust_channel(string $label = null)
-     * @method Show\Field|Collection media_id(string $label = null)
+     * @method Show\Field|Collection medium_id(string $label = null)
      * @method Show\Field|Collection account(string $label = null)
      * @method Show\Field|Collection account_id(string $label = null)
      * @method Show\Field|Collection account_name(string $label = null)
@@ -323,6 +410,35 @@ namespace Dcat\Admin {
      * @method Show\Field|Collection adj_ad_id(string $label = null)
      * @method Show\Field|Collection adj_creative_id(string $label = null)
      * @method Show\Field|Collection email_verified_at(string $label = null)
+     * @method Show\Field|Collection order_id(string $label = null)
+     * @method Show\Field|Collection product_id(string $label = null)
+     * @method Show\Field|Collection open_id(string $label = null)
+     * @method Show\Field|Collection package_id(string $label = null)
+     * @method Show\Field|Collection udid(string $label = null)
+     * @method Show\Field|Collection adid(string $label = null)
+     * @method Show\Field|Collection role_name(string $label = null)
+     * @method Show\Field|Collection role_level(string $label = null)
+     * @method Show\Field|Collection game_order_id(string $label = null)
+     * @method Show\Field|Collection pay_amout_str(string $label = null)
+     * @method Show\Field|Collection pay_amout(string $label = null)
+     * @method Show\Field|Collection product_amout(string $label = null)
+     * @method Show\Field|Collection game_product_id(string $label = null)
+     * @method Show\Field|Collection currency_type(string $label = null)
+     * @method Show\Field|Collection pay_status(string $label = null)
+     * @method Show\Field|Collection pay_type(string $label = null)
+     * @method Show\Field|Collection pay_no(string $label = null)
+     * @method Show\Field|Collection ip(string $label = null)
+     * @method Show\Field|Collection ext(string $label = null)
+     * @method Show\Field|Collection gg_ext(string $label = null)
+     * @method Show\Field|Collection pay_finish_time(string $label = null)
+     * @method Show\Field|Collection callcakc_success_time(string $label = null)
+     * @method Show\Field|Collection created_date(string $label = null)
+     * @method Show\Field|Collection gc_openid(string $label = null)
+     * @method Show\Field|Collection gg_openid(string $label = null)
+     * @method Show\Field|Collection oauth_code(string $label = null)
+     * @method Show\Field|Collection login_type(string $label = null)
+     * @method Show\Field|Collection last_login_ip(string $label = null)
+     * @method Show\Field|Collection last_login_time(string $label = null)
      */
     class Show {}
 
