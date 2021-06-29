@@ -1,0 +1,35 @@
+<?php
+return [
+    'labels' => [
+        'Order' => 'Order',
+        'order' => 'Order',
+    ],
+    'fields' => [
+        'open_id' => '融合用户ID',
+        'cate_id' => '游戏组',
+        'game_id' => '游戏',
+        'package_id' => '游戏包',
+        'udid' => '设备id',
+        'adid' => 'adjust_id',
+        'role_id' => '角色ID',
+        'role_name' => '角色名',
+        'role_level' => '角色等级',
+        'order_id' => '融合订单号',
+        'game_order_id' => '游戏订单号',
+        'pay_amout' => '支付金额',
+        'product_amout' => '商品定价 美元',
+        'game_product_id' => '游戏商品ID',
+        'product_id' => '支付渠道计费点ID',
+        'currency_type' => '币种',
+        'pay_status' => '支付状态',
+        'pay_type' => '支付类型',
+        'pay_no' => '支付平台流水号',
+        'ip' => 'ip',
+        'pay_finish_time' => '支付完成时间',
+        'callcakc_success_time' => '回调成功的时间',
+        'created_date' => '日期',
+        'created_at' => '创建时间',
+    ],
+    'options' => [
+    ],
+];

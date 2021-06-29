@@ -24,4 +24,5 @@ Route::group([
     $router->get('packages/{package_id}/load', 'PackageController@load')->name('package.load');
     $router->resource('serving_plans', 'ServingPlanController',['only' => ['index']]);
     $router->get('sdk/users', 'SdkUserController@index');
+    $router->get('sdk/orders', 'OrderController@index');
 });
