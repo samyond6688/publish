@@ -222,7 +222,7 @@ class PackageController extends AdminController
                 $data = $form->updates();
 
                 //添加自然量投放计划
-                ServingPlan::create(['adj_app_name' => $data['package_name_id']]);
+                ServingPlan::create(['adj_app_name' => $data['package_name_id'],'is_organic' => 1]);
             });
 
         });
