@@ -7,8 +7,6 @@ use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
-use App\Models\Package;
-use App\Models\MediumAccount;
 use App\Models\PluginParam;
 use Dcat\Admin\Models\Administrator;
 
@@ -27,30 +25,28 @@ class ServingPlanController extends AdminController
             $grid->column('id')->sortable();
             $grid->column('ad_name');
 
-            $grid->column('投放媒体')->display(function($value){
-                 return empty($this->mediumAccount()) ? "自然量" : $this->mediumAccount()->medium->name;
+            $grid->column('medium_name')->display(function($value){
+                 return empty($value) ? "自然量" : $value;
             });
 
-            $grid->column('媒体账号')->display(function($value){
-                 return empty($this->mediumAccount()) ? "自然量" : $this->mediumAccount()->account;
+            $grid->column('medium_account_account')->display(function($value){
+                 return empty($value) ? "自然量" : $value;
             });
 
-            $grid->column('账号id')->display(function($value){
-                 return empty($this->mediumAccount()) ? "自然量" : $this->mediumAccount()->account_id;
+            $grid->column('medium_account_account_id')->display(function($value){
+                 return empty($value) ? "自然量" : $value;
             });
 
-            $grid->column('游戏')->display(function($value){
-                 return $this->package()->name;
-            });
+            $grid->column('package_name');
 
             $grid->column('adj_app_name');
 
-            $grid->column('系统')->display(function($value){
-                 return PluginParam::$typeConfig[$this->package()->plugin_type];
+            $grid->column('package_plugin_type')->display(function($value){
+                 return PluginParam::$typeConfig[$value];
             });
 
-            $grid->column('归属人')->display(function($value){
-                return empty($this->mediumAccount()) ? "自然量" : Administrator::find($this->mediumAccount()->owner_id)->name;
+            $grid->column('medium_account_owner_id')->display(function($value){
+                return empty($value) ? "自然量" : Administrator::find($value)->name;
             });
 
             $grid->column('created_at');

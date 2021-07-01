@@ -198,31 +198,40 @@ class PackageController extends AdminController
             $form->hidden('plugin_params')->default(null);
 
             $form->saving(function (Form $form) use ($pluginParam) {
-                $plugin_params = [];
-                foreach ($pluginParam as $key => $value) {
-                    $code = $value['name'];
-                    if($params = $form->input($code)){
-                        foreach ($params as $k => $v) {
-                            if(!empty($v)){
-                                $plugin_params[$code] = $params;
-                                break;
+                if(!empty($form->input('package_name_id'))){//通过包名来判断是否为状态更新还是编辑
+                    $plugin_params = [];
+                    foreach ($pluginParam as $key => $value) {
+                        $code = $value['name'];
+                        if($params = $form->input($code)){
+                            foreach ($params as $k => $v) {
+                                if(!empty($v)){
+                                    $plugin_params[$code] = $params;
+                                    break;
+                                }
                             }
+                            $form->deleteInput($code);
                         }
-                        $form->deleteInput($code);
                     }
+                    $form->plugin_params = json_encode($plugin_params);
+                    $form->petitioner = Admin::user()->name;
                 }
-                $form->plugin_params = json_encode($plugin_params);
-                $form->petitioner = Admin::user()->name;
-
-
             });
 
 
             $form->saved(function (Form $form) {
                 $data = $form->updates();
 
-                //添加自然量投放计划
-                ServingPlan::create(['adj_app_name' => $data['package_name_id'],'is_organic' => 1]);
+                if($form->isCreating()){//添加游戏包时自动生成自然量投放计划
+                    $data = [
+                        'adj_app_name' => $data['package_name_id'],
+                        'is_organic' => 1,
+                        'package_name' => $data['name'],
+                        'package_plugin_type' => $data['plugin_type'],
+                    ];
+
+                    ServingPlan::create($data);
+                }
+
             });
 
         });

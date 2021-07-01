@@ -22,7 +22,7 @@ id game_id name package_name_id plugin_login plugin_pay adjust_key petitioner os
             $table->string('package_name_id');
             $table->string('plugin_login');
             $table->string('plugin_pay');
-            $table->string('plugin_type');
+            $table->tinyInteger('plugin_type');
             $table->string('adjust_key');
             $table->string('petitioner');
             $table->text('plugin_params');

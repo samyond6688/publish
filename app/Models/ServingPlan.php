@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ServingPlan extends Model
 {
     protected $fillable = [
-        'ad_name', 'adj_fb_account_id', 'adj_tracker','adj_app_name','adj_network_name','adj_campaign_id','adj_ad_id','adj_creative_id','status','mark'
+        'ad_name', 'adj_fb_account_id', 'adj_tracker','adj_app_name','adj_network_name','adj_campaign_id','adj_ad_id','adj_creative_id','is_organic','package_name','package_plugin_type','status','mark'
     ];
 
 
