@@ -94,7 +94,9 @@ class GameController extends AdminController
 
             $form->saved(function (Form $form) {//有更改清缓存
                 $rd_key = "table_games";
-                Redis::del($rd_key);
+                if($form->isEditing()){
+                    Redis::hDel($rd_key,$form->getKey());
+                }
             });
         });
     }

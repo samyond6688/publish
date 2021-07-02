@@ -234,7 +234,9 @@ class PackageController extends AdminController
                 }
 
                 $rd_key = "table_packages";
-                Redis::del($rd_key);
+                if($form->isEditing()){
+                    Redis::hDel($rd_key,$form->getKey());
+                }
 
             });
 
