@@ -9,6 +9,7 @@ use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
 use Dcat\Admin\Widgets\Card;
+use Illuminate\Support\Facades\Redis;
 
 class GameController extends AdminController
 {
@@ -90,6 +91,11 @@ class GameController extends AdminController
             $form->text('game_secret')->required();
             $form->hidden('status')->default(1);
             $form->text('mark');
+
+            $form->saved(function (Form $form) {//有更改清缓存
+                $rd_key = "table_games";
+                Redis::del($rd_key);
+            });
         });
     }
 }

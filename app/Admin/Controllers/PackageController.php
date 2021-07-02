@@ -15,6 +15,7 @@ use Dcat\Admin\Admin;
 use Dcat\Admin\Models\Administrator;
 use Dcat\Admin\Widgets\Card;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class PackageController extends AdminController
 {
@@ -231,6 +232,9 @@ class PackageController extends AdminController
 
                     ServingPlan::create($data);
                 }
+
+                $rd_key = "table_packages";
+                Redis::del($rd_key);
 
             });
 

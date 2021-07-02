@@ -11,6 +11,7 @@ use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
 use Dcat\Admin\Widgets\Card;
 use Dcat\Admin\Admin;
+use Illuminate\Support\Facades\Redis;
 
 class CateController extends AdminController
 {
@@ -128,6 +129,11 @@ class CateController extends AdminController
 
                     return "<span class='btn btn-success create-form'> 新增游戏题材/类型 </span> &nbsp;&nbsp;";
                 });
+            });
+
+            $form->saved(function (Form $form) {//有更改清缓存
+                $rd_key = "table_cates";
+                Redis::del($rd_key);
             });
         });
     }
