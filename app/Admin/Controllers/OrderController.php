@@ -7,6 +7,7 @@ use App\Models\Package;
 use App\Models\Plugin;
 use App\Models\Cate;
 use App\Models\Order;
+use App\Models\PluginParam;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -98,10 +99,11 @@ class OrderController extends AdminController
                 $GameModel = new Game();
                 $PackageModel = new Package();
                 $PluginModel = new Plugin();
+                $PluginParamModel = new PluginParam();
                 $CateList = $CateModel->pluck('name', 'id');
                 $GameList = $GameModel->pluck('name', 'id');
                 $PackageList = $PackageModel->pluck('name', 'id');
-                $PluginList = $PluginModel->pluck('name', 'id');
+                $PluginParamList = $PluginParamModel->where('type',2)->pluck('name', 'id');
                 $filter->between('created_at')->datetime()->width('4');
                 $filter->equal('cate_id')->width(3)->multipleSelect($CateList);
                 $filter->equal('game_id')->width(3)->multipleSelect($GameList);
@@ -110,6 +112,12 @@ class OrderController extends AdminController
                 $filter->equal('pay_status')->width(3)->multipleSelect(Order::$orderStatus);
                 $filter->equal('sdk_status','推送状态')->width(3)->multipleSelect(Order::$pushStatus);
                 $filter->equal('pay_type')->width(3)->multipleSelect(Order::$orderType);
+                $filter->where('search_plugin_pay', function ($query) use ($PackageModel){
+                    $ids = $PackageModel->whereRaw('JSON_CONTAINS(`plugin_pay`,JSON_ARRAY("'.implode('","',$this->input).'"))')->pluck('id');
+                    $query->wherein('package_id', $ids);
+                }, admin_trans('package.fields.plugin_pay'))->width(3)->multipleSelect($PluginParamList);
+
+
                 $filter->equal('udid')->width(3);
                 $filter->equal('open_id')->width(3);
                 $filter->where('search', function ($query) {

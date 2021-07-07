@@ -37,10 +37,10 @@ class PackageController extends AdminController
                 return $game ? $game->name."[".$game->id."]" : '';
             });
 
-            $pluginParamOption = Package::pluginParamName();
-            $grid->column('plugin_login')->using($pluginParamOption);
-            $grid->column('plugin_pay')->using($pluginParamOption);
-
+            $grid->column('plugin_login')->using(Package::pluginParamName());
+            $grid->column('plugin_pay')->display(function($value){
+               return implode(',',array_values(Package::pluginParamName($value)));
+            });
 
             $grid->column('plugin_type')->using(PluginParam::$typeConfig);
             $grid->column('petitioner');
@@ -152,9 +152,9 @@ class PackageController extends AdminController
                 return $value;
             });
 
-            $form->select('plugin_pay')->options($plugin_options)->required()->saving(function ($value) {
+            $form->multipleSelect('plugin_pay')->options($plugin_options)->required()->saving(function ($value) {
                 // 转化成json字符串保存到数据库
-                return $value;
+                return json_encode($value);
             });
 
 
@@ -281,17 +281,17 @@ class PackageController extends AdminController
                 }
 
                $('select[name="plugin_login"]').html(pluginLoginHtml)
-               $('select[name="plugin_pay"]').html(pluginPayHtml)
+               $('select[name="plugin_pay[]"]').html(pluginPayHtml)
 
             })
 
 
             //判断选择内容
-            $('select[name="plugin_login"],select[name="plugin_pay"]').change(function(){
+            $('select[name="plugin_login"],select[name="plugin_pay[]"]').change(function(){
                 hideAll(pluginParam)
                 let plugin = []
                 let pluginLogin = $('select[name="plugin_login"]').val()
-                let pluginPay = $('select[name="plugin_pay"]').val();
+                let pluginPay = $('select[name="plugin_pay[]"]').val();
                 
                 
 

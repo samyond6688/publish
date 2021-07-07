@@ -17,14 +17,19 @@ class Package extends Model
      * @param $ids
      * @return array|string
      */
-    public static function pluginParamName(){
-        $plugin_name = PluginParam::all()->pluck('name','id');
+    public static function pluginParamName($ids=null){
+        !is_array($ids) && $ids = json_decode($ids,true);
+        if(!$ids){
+            $plugin_name = PluginParam::all()->pluck('name','id');
+        }else{
+            $plugin_name = PluginParam::whereIn('id',$ids)->pluck('name','id')->toArray();
+        }
+
         $nameList = [];
         foreach ($plugin_name as $id => $code) {
             $nameList[$id] = Plugin::$nameConfig[$code]??'';
         }
         return $nameList;
     }
-
 
 }
