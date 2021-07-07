@@ -1,8 +1,8 @@
 <?php
 return [
     'labels' => [
-        'Order' => 'Order',
-        'order' => 'Order',
+        'Order' => '订单',
+        'order' => '订单',
     ],
     'fields' => [
         'open_id' => '融合用户ID',

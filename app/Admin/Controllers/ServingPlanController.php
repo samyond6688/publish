@@ -42,7 +42,7 @@ class ServingPlanController extends AdminController
             $grid->column('adj_app_name');
 
             $grid->column('package_plugin_type')->display(function($value){
-                 return PluginParam::$typeConfig[$value];
+                 return PluginParam::$typeConfig[$value] ?? '';
             });
 
             $grid->column('medium_account_owner_id')->display(function($value){

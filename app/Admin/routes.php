@@ -24,5 +24,9 @@ Route::group([
     $router->get('packages/{package_id}/load', 'PackageController@load')->name('package.load');
     $router->resource('serving_plans', 'ServingPlanController',['only' => ['index']]);
     $router->get('sdk/users', 'SdkUserController@index');
-    $router->get('sdk/orders', 'OrderController@index');
+    $router->resource('sdk/orders', 'OrderController');
+    $router->resource('partner', 'PartnerController');
+    $router->resource('cost_product', 'CostProductController');
+    $router->post('api/pluginParam', 'PackageController@pluginParam')->name('api.pluginParam');;
+    //$router->resource('sdk', 'OrderController');
 });

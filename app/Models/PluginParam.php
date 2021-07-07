@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class PluginParam extends Model
 {
@@ -34,6 +36,14 @@ class PluginParam extends Model
     protected $fillable = [
         'name', 'e_mark', 'type','plugin_use','params','status','mark'
     ];
+
+    public static function packageParam()
+    {
+        $where['id'] = ['in',$_POST['ids'] ? explode(',',$_POST['ids']) : []];
+        $ids = $_POST['ids'] ? explode(',',$_POST['ids']) : [];
+        $return = DB::table('plugin_params')->where('id',$ids)->pluck('params','id');
+        return $return;
+    }
 
     public function getParamsAttribute($value)
     {

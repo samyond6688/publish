@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
 {
+    protected  $table = 'games';
     protected $fillable = [
         'name', 'cate_id', '','publisher_id','cooperation_mode','game_secret','app_sign','status','mark'
     ];

@@ -20,7 +20,7 @@ class CreatePluginParamsTable extends Migration
             $table->tinyInteger('e_mark');
             $table->tinyInteger('type');
             $table->string('plugin_use');
-            $table->string('params');
+            $table->string('params',500);
             $table->tinyInteger('status')->nullable()->default(1);
             $table->string('mark')->nullable();
             $table->timestamps();

@@ -34,30 +34,13 @@ class PackageController extends AdminController
             });
 
             $grid->game('游戏id')->display(function($game){
-                return $game->name."[".$game->id."]";
+                return $game ? $game->name."[".$game->id."]" : '';
             });
 
-            $grid->column('plugin_login')->display(function($value){
-                $value = json_decode($value,true);
-                $plugin_name = PluginParam::whereIn('id',$value)->pluck('name')->toArray();
-                $str = '';
-                foreach ($plugin_name as  $code) {
-                    $str .= Plugin::$nameConfig[$code].",";
-                }
-                $str = rtrim($str,',');
-                return $str;
-            });
+            $pluginParamOption = Package::pluginParamName();
+            $grid->column('plugin_login')->using($pluginParamOption);
+            $grid->column('plugin_pay')->using($pluginParamOption);
 
-            $grid->column('plugin_pay')->display(function($value){
-                $value = json_decode($value,true);
-                $plugin_name = PluginParam::whereIn('id',$value)->pluck('name')->toArray();
-                $str = '';
-                foreach ($plugin_name as  $code) {
-                    $str .= Plugin::$nameConfig[$code].",";
-                }
-                $str = rtrim($str,',');
-                return $str;
-            });
 
             $grid->column('plugin_type')->using(PluginParam::$typeConfig);
             $grid->column('petitioner');
@@ -136,6 +119,7 @@ class PackageController extends AdminController
         foreach ($pluginParam as $key => $value) {
             $pluginParam[$key]['name_str'] =  Plugin::$nameConfig[$value['name']];
         }
+        //dd($pluginParam);
         Admin::script($this->script(json_encode($pluginParam)));
 
         return Form::make(new Package(), function (Form $form) use ($pluginParam) {
@@ -160,36 +144,42 @@ class PackageController extends AdminController
                 }
                 Admin::script($this->scriptEdit(json_encode($pluginParamShow)));
             }
-            $form->multipleSelect('plugin_login')->options($plugin_options)->required()->saving(function ($value) {
+            $form->select('plugin_login')->when('>',0, function (Form $form) {
+
+                //Admin::script($this->scriptPluginParam());
+            })->options($plugin_options)->required()->saving(function ($value) {
                 // 转化成json字符串保存到数据库
-                return json_encode($value);
+                return $value;
             });
 
-            $form->multipleSelect('plugin_pay')->options($plugin_options)->required()->saving(function ($value) {
+            $form->select('plugin_pay')->options($plugin_options)->required()->saving(function ($value) {
                 // 转化成json字符串保存到数据库
-                return json_encode($value);
+                return $value;
             });
+
 
             $pluginParamsEdit = $form->model()->plugin_params;
             if(!empty($pluginParamsEdit)) $pluginParamsEdit = json_decode($pluginParamsEdit,true);
-
             foreach ($pluginParam as $key => $plugin) {
                $code = $plugin['name'];
                $name = $plugin['name_str'];
                $params = array_column($plugin['params'], 'params_plugin') ;
+
                $paramsNew = [];
                foreach ($params as $v) {
-                   $paramsNew[$v] = '';
+                   $paramsNew[$v] = $plugin['params']['params_plugin'] ?? '';
+                   !isset($pluginParamsEdit[$code][$v]) && $form->isEditing() && $pluginParamsEdit[$code][$v] = '';//编辑时，如果新加入的参数字段。保存里没有，则默认空
                }
-               $paramsNew = $pluginParamsEdit[$code] ?? $paramsNew;
+               $paramsNew = $pluginParamsEdit[$code] ?? $paramsNew;//编辑没有参数时，全部
 
                $plugin_use = $plugin['plugin_use'];
+
+               //包里的 插件的使用用途 只有登录和支付
                if(in_array(1,$plugin_use) || in_array(2,$plugin_use)){
                     $form->embeds($code,"<span>".$name."</span>", function ($form) use($paramsNew) {
                         foreach ($paramsNew as $key => $value) {
-                            $form->text($key)->value($value);
+                            $form->text($key,$key)->value($value);
                         }
-
                     });
                }
             }
@@ -264,6 +254,7 @@ class PackageController extends AdminController
     }
 
     protected function script($pluginParam){
+        $url = route('dcat.admin.api.pluginParam');
         return <<<JS
             var pluginParam = $pluginParam;
             hideAll(pluginParam)
@@ -289,18 +280,20 @@ class PackageController extends AdminController
                     }
                 }
 
-               $('select[name="plugin_login[]"]').html(pluginLoginHtml)
-               $('select[name="plugin_pay[]"]').html(pluginPayHtml)
+               $('select[name="plugin_login"]').html(pluginLoginHtml)
+               $('select[name="plugin_pay"]').html(pluginPayHtml)
 
             })
 
 
             //判断选择内容
-            $('select[name="plugin_login[]"],select[name="plugin_pay[]"]').change(function(){
+            $('select[name="plugin_login"],select[name="plugin_pay"]').change(function(){
                 hideAll(pluginParam)
                 let plugin = []
-                let pluginLogin = $('select[name="plugin_login[]"]').val()
-                let pluginPay = $('select[name="plugin_pay[]"]').val()
+                let pluginLogin = $('select[name="plugin_login"]').val()
+                let pluginPay = $('select[name="plugin_pay"]').val();
+                
+                
 
                 if(pluginLogin.length > 0){
                     for(let i = 0; i < pluginLogin.length; i++) {
@@ -341,6 +334,13 @@ class PackageController extends AdminController
 JS;
     }
 
+    protected function scriptPluginParam(){
+        return <<<JS
+        $('.form-control.field_plugin_login').on('change',function(e){
+            console.log($(this).val());
+        });
+JS;
+    }
     protected function scriptEdit($pluginParamShow){
         return <<<JS
         var pluginParamShow = $pluginParamShow;
@@ -350,5 +350,9 @@ JS;
             }
         }
 JS;
+    }
+
+    public function pluginParam(Request $request){
+        return PluginParam::packageParam();
     }
 }
