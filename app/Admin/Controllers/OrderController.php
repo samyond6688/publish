@@ -45,12 +45,18 @@ class OrderController extends AdminController
 
             $grid->column('open_id')->limit(10);
             $grid->column('package.id','登录插件')->display(function(){
+                if(!$this->package) return '';
                 $Plugin = new Plugin();
                 $loginPluginIds = $this->package->plugin_login;
-                //$payPluginIds = json_decode($package->plugin_pay,true);
+
+                $loginPluginIds = json_decode($loginPluginIds,true) ?: [];
                 $ids = $loginPluginIds;
-                $PluginData = DB::connection($Plugin->connection)->selectOne('select * from plugins where id in ('.$ids.')');
-                return $PluginData ? ($Plugin::$nameConfig[$PluginData->name] ?: '') : '';
+                $PluginDataList = DB::connection($Plugin->connection)->table('plugins')->whereIn('id',$ids)->pluck('name');
+                $str = '';
+                foreach ($PluginDataList as $name){
+                    $str .= $Plugin::$nameConfig[$name];
+                }
+                return $str;
             });
             $grid->column('cate.name','游戏组')->display(function(){
                 return $this->cate ? $this->cate->id .'-'.$this->cate->name : '';
@@ -113,7 +119,8 @@ class OrderController extends AdminController
                 $filter->equal('sdk_status','推送状态')->width(3)->multipleSelect(Order::$pushStatus);
                 $filter->equal('pay_type')->width(3)->multipleSelect(Order::$orderType);
                 $filter->where('search_plugin_pay', function ($query) use ($PackageModel){
-                    $ids = $PackageModel->whereRaw('JSON_CONTAINS(`plugin_pay`,JSON_ARRAY("'.implode('","',$this->input).'"))')->pluck('id');
+                    //$ids = $PackageModel->whereRaw('JSON_CONTAINS(`plugin_pay`,JSON_ARRAY("'.implode('","',$this->input).'"))')->pluck('id');
+                    $ids = $this->input;
                     $query->wherein('package_id', $ids);
                 }, admin_trans('package.fields.plugin_pay'))->width(3)->multipleSelect($PluginParamList);
 
@@ -199,13 +206,17 @@ class OrderController extends AdminController
 
             $show->row(function (Show\Row $show) use ($model) {
                 $show->width(5)->field('package.id','登录插件')->as(function(){
-
                     $Plugin = new Plugin();
                     $loginPluginIds = $this->package->plugin_login;
-                    $ids = $loginPluginIds;
 
-                    $PluginData = DB::connection($Plugin->connection)->selectOne('select * from plugins where id in ('.$ids.')');
-                    return $PluginData ? ($Plugin::$nameConfig[$PluginData->name] ?: '') : '';
+                    $loginPluginIds = json_decode($loginPluginIds,true) ?: [];
+                    $ids = $loginPluginIds;
+                    $PluginDataList = DB::connection($Plugin->connection)->table('plugins')->whereIn('id',$ids)->pluck('name');
+                    $str = '';
+                    foreach ($PluginDataList as $name){
+                        $str .= $Plugin::$nameConfig[$name];
+                    }
+                    return $str;
                 });
                 $show->width(5)->field('pay_type')->as(function() use($model){
                     return $model::$payPlugin[$this->pay_type] ??'未知';

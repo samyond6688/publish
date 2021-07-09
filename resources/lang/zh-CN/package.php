@@ -6,8 +6,8 @@ return [
     ],
     'fields' => [
         'game_id' => '游戏id',
-        'name' => '游戏包id',
-        'package_name_id' => '包名',
+        'appname' => ' 游戏包名称',
+        'name' => '包名',
         'plugin_login' => '登录插件',
         'plugin_pay' => '充值插件',
         'plugin_type' => '插件类型',
