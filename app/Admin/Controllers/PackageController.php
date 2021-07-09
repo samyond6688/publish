@@ -40,10 +40,10 @@ class PackageController extends AdminController
 
 
             $grid->column('plugin_login')->display(function($value){
-               return implode(',',array_values(Package::pluginParamName($value)));
+               return $value ? implode(',',array_values(Package::pluginParamName($value))) : '';
             });
-            $grid->column('plugin_pay')->using(Package::pluginParamName());
-            $grid->column('plugin_type')->using(PluginParam::$typeConfig);
+            /*$grid->column('plugin_pay')->using(Package::pluginParamName());
+            $grid->column('plugin_type')->using(PluginParam::$typeConfig);*/
             $grid->column('petitioner');
 
 

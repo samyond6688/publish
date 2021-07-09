@@ -18,6 +18,7 @@ class Package extends Model
      * @return array|string
      */
     public static function pluginParamName($ids=null){
+        
         !is_array($ids) && $ids = json_decode($ids,true);
         if(!$ids){
             $plugin_name = PluginParam::all()->pluck('name','id');
