@@ -83,8 +83,10 @@ class PackageController extends AdminController
 
     public function load(Request $request){
         $data = Package::find($request->package_id)->toArray();
-        $fileName = $data["name"]."_".PluginParam::$typeConfig[$data["plugin_type"]]."_info.txt";
-        $this->saveInfo($data,$fileName);
+        $game = Game::find($data['game_id'])->toArray();
+        $plugin_type_name = PluginParam::$typeConfig[$data["plugin_type"]];
+        $fileName = $data["appname"]."_".$plugin_type_name."_info.txt";
+        $this->saveInfo($data+['game'=>$game,'plugin_type_name'=>$plugin_type_name],$fileName);
         return response()->download(realpath(base_path('public/uploads/').$fileName), $fileName);
     }
 
@@ -248,12 +250,13 @@ class PackageController extends AdminController
         $str = "";
         //$html .= "<h4>" . Plugin::$nameConfig[$name[0]] . "</h4>";
         //$str .= "" . PluginParam::$typeConfig[$data['plugin_type']]."\r\n\r\n";
-        $str .= "游戏id game_id：".$data["game_id"]."\r\n\r\n";
-        $str .= "应用名 package_appname：".$data['appname']."\r\n\r\n";
-        $str .= "Adjust秘钥 game_secret：".$data["adjust_key"]."\r\n\r\n";
-        $str .= "渠道（充值插件）channel_id：".$data["plugin_pay"]."\r\n\r\n";
-        $str .= "游戏包id package_id：".$data["id"]."\r\n\r\n";
-        $str .= "包名 package_name：".$data["name"]."\r\n\r\n";
+        $str .= $data["plugin_type_name"]."\r\n\r\n";
+        $str .= "game_id：".$data["game_id"]."   --游戏id\r\n\r\n";
+        $str .= "package_appname：".$data['appname']."   --游戏名，应用名\r\n\r\n";
+        $str .= "game_secret：".$data['game']["game_secret"]."   --游戏秘钥 \r\n\r\n";
+        $str .= "channel_id：".$data["plugin_pay"]."  --插件（渠道）\r\n\r\n";
+        $str .= "package_id：".$data["id"]."   --游戏包id\r\n\r\n";
+        $str .= "package_name：".$data["name"]."  --包名\r\n\r\n";
 
         file_put_contents(base_path("public/uploads/".$fileName), $str);
     }
