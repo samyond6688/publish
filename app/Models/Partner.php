@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Partner extends Model
 {
-	
-    protected $table = 'partner';
+
 
     public static $partnerType = [
         1 =>'游戏开发商',

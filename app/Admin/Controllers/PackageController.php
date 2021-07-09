@@ -2,7 +2,9 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Order;
 use App\Models\Package;
+use App\Models\SdkUser;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -63,7 +65,7 @@ class PackageController extends AdminController
                 $html .= "<h4>" . PluginParam::$typeConfig[$this->plugin_type] . "</h4>";
                 $html .= "<div><span>game_id：</span><span>" . $this->game_id . "</span></div>";
                 $html .= "<div><span>package_appname：</span><span>" . $this->appname . "</span></div>";
-                $html .= "<div><span>game_secret：</span><span>" . $this->adjust_key . "</span></div>";
+                $html .= "<div><span>game_secret：</span><span>" . $this->game->game_secret . "</span></div>";
                 $html .= "<div><span>channel_id：</span><span>" . $this->plugin_pay . "</span></div>";
                 $html .= "<div><span>package_id：</span><span>" . $this->id . "</span></div>";
                 $html .= "<div><span>package_name：</span><span>" . $this->name . "</span></div>";

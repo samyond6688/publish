@@ -24,7 +24,6 @@ class ServingPlanController extends AdminController
             $grid->model()->orderBy('id', 'desc');
             $grid->column('id')->sortable();
             $grid->column('ad_name');
-
             $grid->column('medium_name')->display(function($value){
                  return empty($value) ? "自然量" : $value;
             });
@@ -51,14 +50,46 @@ class ServingPlanController extends AdminController
 
             $grid->column('created_at');
 
-            $grid->column('mark');
+            $grid->column('mark',admin_trans('admin.action'))->display(admin_trans_field('mark'))->modal(function ($modal) {
+                $modal->title(admin_trans_field('mark'));
+                $modal->icon('');
+                $html = '<div>';
+                $html .= "<h4>" . $this->id. "</h4>";
+                $html .= "<div><span>" . $this->mark . "</span></div>";
+                $html .= "</div>";
+                return $html;
+            });
 
             $grid->disableActions();//禁用操作
             $grid->disableCreateButton();//禁用新增按钮
 
+            $grid->showColumnSelector();
+            // 设置默认隐藏字段
+            $grid->hideColumns(['']);
+
+
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id')->width(3);
+                $filter->where('search_medium_name', function ($query) {
+                    if($this->input=='自然量') $this->input = '';
+                    $this->input && $query->where('medium_account_account', 'like', "%{$this->input}%");
+                }, admin_trans_field('medium_account_account'))->width(3);
 
+                $filter->where('search_account_id', function ($query) {
+                    if($this->input=='自然量') $this->input = '';
+                    $this->input && $query->where('medium_account_account', 'like', "%{$this->input}%");
+                }, admin_trans_field('medium_account_account'))->width(3);
+
+                $filter->where('search_account_owner_id', function ($query) {
+                    if($this->input=='自然量') $this->input = '';
+                    $this->input && $query->where('medium_account_account', 'like', "%{$this->input}%");
+                }, admin_trans_field('medium_account_account'))->width(3);
+
+
+                $filter->where('search_account', function ($query) {
+                    if($this->input=='自然量') $this->input = '';
+                    $this->input && $query->where('medium_account_account', 'like', "%{$this->input}%");
+                }, admin_trans_field('medium_account_account'))->width(3);
             });
         });
     }

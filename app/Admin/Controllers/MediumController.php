@@ -59,7 +59,7 @@ class MediumController extends AdminController
     protected function form()
     {
         return Form::make(new Medium(), function (Form $form) {
-            $form->text('name')->required();
+            $form->text('name')->rules('required|unique:media');;
             $form->text('adjust_channel')->required();
             $form->hidden('status')->default(1);
             $form->text('mark');

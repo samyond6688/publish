@@ -13,7 +13,7 @@ class CreateCostProductTable extends Migration
      */
     public function up()
     {
-        Schema::create('cost_product', function (Blueprint $table) {
+        Schema::create('cost_products', function (Blueprint $table) {
             $table->increments('id');
             $table->decimal('amount')->default('0');
             $table->string('product_id')->default('');
@@ -29,6 +29,6 @@ class CreateCostProductTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cost_product');
+        Schema::dropIfExists('cost_products');
     }
 }

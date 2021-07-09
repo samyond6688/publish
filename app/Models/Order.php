@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $connection = 'mysql_sdk';
-
     public $timestamps = false;
     public static $pushStatus = [
         0 =>'未推送',

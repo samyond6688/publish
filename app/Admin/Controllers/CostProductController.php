@@ -81,7 +81,7 @@ class CostProductController extends AdminController
             $form->disableViewButton();
             $form->display('id')->disable();
             $form->text('amount')->rules('min:0');
-            $form->text('product_id')->rules('required|unique:cost_product');
+            $form->text('product_id')->rules('required|unique:cost_products');
             $form->hidden('status');
             //$form->display('created_at');
             //$form->display('updated_at');

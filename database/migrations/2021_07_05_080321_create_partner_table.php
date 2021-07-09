@@ -13,7 +13,7 @@ class CreatePartnerTable extends Migration
      */
     public function up()
     {
-        Schema::create('partner', function (Blueprint $table) {
+        Schema::create('partners', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->default('');
             $table->string('partner_type');
@@ -28,6 +28,6 @@ class CreatePartnerTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('partner');
+        Schema::dropIfExists('partners');
     }
 }
