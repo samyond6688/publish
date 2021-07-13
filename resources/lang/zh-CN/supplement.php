@@ -1,0 +1,38 @@
+<?php 
+return [
+    'labels' => [
+        'Supplement' => 'Supplement',
+        'supplement' => 'Supplement',
+    ],
+    'fields' => [
+        'open_id' => 'open_id',
+        'cate_id' => 'cate_id',
+        'game_id' => 'game_id',
+        'package_id' => 'package_id',
+        'udid' => 'udid',
+        'adid' => 'adid',
+        'role_id' => 'role_id',
+        'role_name' => 'role_name',
+        'role_level' => 'role_level',
+        'order_id' => 'order_id',
+        'game_order_id' => '游戏订单号',
+        'pay_amout_str' => '接口获取的支付金额字符串',
+        'pay_amout' => '支付金额 按照当地币种',
+        'product_amout' => '商品定价 美元',
+        'game_product_id' => '游戏商品ID',
+        'product_id' => '支付渠道计费点ID',
+        'currency_type' => '币种',
+        'pay_status' => '订单状态 0未支付 1已支付 2已发货',
+        'pay_type' => '1谷歌支付 2苹果支付',
+        'pay_no' => '支付平台流水号',
+        'ip' => 'ip',
+        'ext' => 'ext',
+        'gg_ext' => 'gg_ext',
+        'pay_finish_time' => '支付完成时间',
+        'callcakc_success_time' => '收到研发回调成功的时间',
+        'created_date' => 'created_date',
+        'created_at' => 'created_at',
+    ],
+    'options' => [
+    ],
+];

@@ -22,6 +22,8 @@ return [
         'path'                  => '路径',
         'input'                 => '输入',
         'type'                  => '类型',
+        'other_info'            => '其他信息',
+        'look'                  => '查看',
     ],
     'labels' => [
         'list'     => '列表',

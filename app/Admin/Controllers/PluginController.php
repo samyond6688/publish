@@ -47,9 +47,13 @@ class PluginController extends AdminController
             $grid->column('type')->using(Plugin::$accountTypeConfig);
             $grid->column('mark');
             $grid->column('status')->switch();
+            $grid->disableFilterButton();
             $grid->filter(function (Grid\Filter $filter) {
+                $filter->expand();
+                $filter->equal('account')->width(3);
                 $filter->equal('company')->select(Plugin::$companyConfig)->width(3);
-                $filter->equal('name')->select(Plugin::$nameConfig)->width(3);
+                //$filter->equal('account')->select(Plugin::$nameConfig)->width(3);
+
                 $filter->equal('admin')->width(3);
                 $filter->equal('type')->select(Plugin::$accountTypeConfig)->width(3);
             });

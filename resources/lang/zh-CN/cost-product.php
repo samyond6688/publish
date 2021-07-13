@@ -7,7 +7,7 @@ return [
     'fields' => [
         'amount' => '金额',
         'product_id' => '计费点',
-        'status' => '订阅状态',
+        'is_subscribe' => '订阅状态',
     ],
     'options' => [
     ],

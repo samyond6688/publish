@@ -4,6 +4,7 @@ use Dcat\Admin\Admin;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid\Filter;
+use Dcat\Admin\Layout\Navbar;
 use Dcat\Admin\Show;
 use Dcat\Admin\Layout\Content;
 
@@ -51,4 +52,9 @@ Form::resolving(function (Form $form) {
 
 Filter::resolving(function (Filter $filter) {
     $filter->panel();
+});
+
+Admin::navbar(function (Navbar $navbar) {
+    $navbar->left(view('layouts.sidebar'));
+
 });

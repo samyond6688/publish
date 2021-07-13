@@ -3,8 +3,11 @@ return [
     'labels' => [
         'PluginParam' => '插件参数',
         'plugin-param' => '插件参数',
+        'param_key' => '映射',
     ],
     'fields' => [
+
+        'id' =>'插件id',
         'name' => '插件名称',
         'e_mark' => '插件标识',
         'type' => '插件类型',

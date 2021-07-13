@@ -2,9 +2,11 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Action\EditCostProduct;
 use App\Models\Cate;
 use App\Models\CateTheme;
 use App\Models\CateType;
+use App\Models\CostProduct;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -24,7 +26,9 @@ class CateController extends AdminController
     protected function grid()
     {
         return Grid::make(new Cate(), function (Grid $grid) {
-            $grid->column('name');
+            $grid->column('name')->display(function($name){
+                return $name.'['.$this->id.']';
+            });;
             $grid->column('developer')->using(Cate::$developerConfig);
             $grid->column('sign_id')->using(Cate::$signConfig);
             $grid->column('cooperation_mode')->using(Cate::$cooperationModeConfig);
@@ -35,20 +39,22 @@ class CateController extends AdminController
                 return CateType::find($id)->toArray()['name'];
             });
 
-            $grid->column('其它信息')
-            ->display('查看') // 设置按钮名称
-            ->modal(function ($modal) {
-                // 设置弹窗标题
-                $modal->title('其它信息');
+            $grid->column(admin_trans_field('other_info'))
+                ->display(admin_trans_field('look')) // 设置按钮名称
+                ->modal(function ($modal) {
+                    // 设置弹窗标题
+                    $modal->title(admin_trans_field('other_info'));
 
-                // 自定义图标
-                $modal->icon('');
-                $html = '<div><lable>游戏密钥：</lable>'.$this->game_secret.'</div><div><lable>游戏签名：</lable>'.$this->app_sign.'</div>';
+                    // 自定义图标
+                    $modal->icon('');
+                    $html = '<div><lable>'.admin_trans_field('game_secret').'：</lable>'.$this->game_secret.'</div>
+<div><lable>'.admin_trans_field('address').'：</lable>'.$this->address.'</div>
+<div><lable>'.admin_trans_field('app_sign').'：</lable>'.$this->app_sign.'</div>';
 
-                $card = new Card(null, $html);
+                    $card = new Card(null, $html);
 
-                return "<div style='padding:10px 10px 0'>$card</div>";
-            });
+                    return "<div style='padding:10px 10px 0'>$card</div>";
+                });
             $grid->column('status')->switch();
             $grid->column('mark');
 
@@ -57,7 +63,26 @@ class CateController extends AdminController
                 $filter->equal('status')->select([0=>'关闭',1=>'开启'])->width(3);
 
             });
+            $self = $this;
+            $grid->actions(function (Grid\Displayers\Actions $actions) use ($self) {
+                $actions->append(new EditCostProduct());
+            });
         });
+    }
+
+    public function buildCostProduct($rowArray)
+    {
+        $CostProduct = new CostProduct();
+        $data = $CostProduct->where('cate_id',$rowArray->id)->pluck('id')->toArray();
+
+        Form::dialog('编辑计费点')
+            ->click('.edit-form')
+            ->success('Dcat.reload()'); // 编辑成功后刷新页面
+        // 当需要在同个“class”的按钮中绑定不同的链接时，把链接放到按钮的“data-url”属性中即可
+        $editPage = admin_base_path('cost_products');
+        return " <span class='btn btn-primary edit-form' data-url='{$editPage}'> &nbsp;计费点 </span>
+</div>
+";
     }
 
     /**

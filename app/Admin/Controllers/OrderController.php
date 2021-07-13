@@ -22,12 +22,12 @@ class OrderController extends AdminController
      *
      * @return Grid
      */
-    protected function grid()
+    public function grid($status=[0,1,2])
     {
         $model = new Order();
-        return Grid::make($model, function (Grid $grid) use ($model){
+        return Grid::make($model, function (Grid $grid) use ($model,$status){
             $grid->model()->with(['package','cate','game']);
-            //dd($grid);
+            $grid->model()->whereIn('pay_status',$status);//屏蔽补单的
             //$grid->column('id')->sortable();
             $grid->column('order_id')->limit(10);
             $grid->column('game_order_id');

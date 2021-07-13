@@ -29,24 +29,27 @@ class PartnerController extends AdminController
                 return $str;
                 //return Partner::$partnerType[$value];
             });
-            $grid->column('invoice')->display('查看')->modal(function ($modal) {
+            $grid->column('invoice',admin_trans_field('other_info'))->display(admin_trans_field('look'))->modal(function ($modal) {
                 // 设置弹窗标题
-                $modal->title($this->name .'的信息');
+                $modal->title($this->name .' '.admin_trans_label('detail'));
 
                 // 自定义图标
                 $modal->icon('');
                 //dump($this->tax_id_label);
                 $html = '';
+                $html .= '<br /><h3>'.admin_trans_label('tax_item_info').'</h3>';
                 $html .= '<div>'.admin_trans_field('tax_id_label').'：'.$this->tax_id_label.'</div>';
                 $html .= '<div>'.admin_trans_field('tax_address').'：'.$this->tax_address.'</div>';
                 $html .= '<div>'.admin_trans_field('tax_bank').'：'.$this->tax_bank.'</div>';
                 $html .= '<div>'.admin_trans_field('tax_bank_account').'：'.$this->tax_bank_account.'</div>';
                 $html .= '<div>'.admin_trans_field('tax_mobile').'：'.$this->tax_mobile.'</div>';
+                $html .= '<br /><h3>'.admin_trans_label('collection_info').'</h3>';
                 $tax_item_type = '';
                 foreach (json_decode($this->tax_item_type,true) ??[] as $item){
                     $tax_item_type .= '<label>'.Partner::$partnerItems[$item].'</label>';
                 }
                 $html .= '<div>'.admin_trans_field('tax_item_type').'：'.$tax_item_type.'</div>';
+                $html .= '<br /><h3>'.admin_trans_label('addressee_info').'</h3>';
                 $html .= '<div>'.admin_trans_field('collection_bank').'：'.$this->collection_bank.'</div>';
                 $html .= '<div>'.admin_trans_field('collection_bank_account').'：'.$this->collection_bank_account.'</div>';
                 $html .= '<div>'.admin_trans_field('collection_desc').'：'.$this->collection_desc.'</div>';
@@ -58,17 +61,20 @@ class PartnerController extends AdminController
 
                 return "<div style='padding:10px 10px 0'>$card</div>";
             });;
-            $grid->column('created_at');
+            //$grid->column('created_at');
             $grid->column('status')->switch();
-            $grid->column('updated_at')->sortable();
+            //$grid->column('updated_at')->sortable();
+            $grid->disableFilterButton();//按钮不用显示
+
             $grid->filter(function (Grid\Filter $filter) {
+                $filter->expand();
                 $filter->equal('name')->width(3);
                 $filter->where('partner_type', function ($query) {
                     foreach ($this->input as $key =>$item){
                         $query->whereRaw('FIND_IN_SET(?,partner_type)',[$item],'or');
                    }
 
-                }, '角色或id')->width(3)->multipleSelect(Partner::$partnerType);
+                }, admin_trans_field('partner_type'))->width(3)->multipleSelect(Partner::$partnerType);
             });
         });
     }
@@ -109,7 +115,7 @@ class PartnerController extends AdminController
 
 
             $model = $form->model();
-            $form->embeds("invoice", '开票信息', function ($form) use($model){
+            $form->embeds("invoice", admin_trans_label('tax_item_info'), function ($form) use($model){
                 $form->text('tax_id_label')->value($model->tax_id_label);
                 $form->text('tax_address')->value($model->tax_address);
                 $form->text('tax_bank')->value($model->tax_bank);
@@ -119,12 +125,12 @@ class PartnerController extends AdminController
                 $form->multipleSelect('tax_item_type')->default($values, true)->options(Partner::$partnerItems);
 
             });
-            $form->embeds("invoice",'收款信息', function ($form) use($model){
+            $form->embeds("invoice",admin_trans_label('collection_info'), function ($form) use($model){
                 $form->text('collection_bank')->value($model->collection_bank);
                 $form->text('collection_bank_account')->value($model->collection_bank_account);
                 $form->textarea('collection_desc')->rows(3)->value($model->collection_desc);
             });
-            $form->embeds("invoice",'收件信息', function ($form) use($model){
+            $form->embeds("invoice",admin_trans_label('addressee_info'), function ($form) use($model){
                 $form->text('addressee_name')->value($model->addressee_name);
                 $form->text('addressee_address')->value($model->addressee_address);
                 $form->textarea('addressee_desc')->rows(3)->value($model->addressee_desc);

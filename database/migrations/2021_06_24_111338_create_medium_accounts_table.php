@@ -16,7 +16,7 @@ class CreateMediumAccountsTable extends Migration
         //media_id type account password account_id account_name agent_id company_id owner_id status mark
         Schema::create('medium_accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('media_id');
+            $table->integer('medium_id');
             $table->smallInteger('type');
             $table->string('account');
             $table->string('password');

@@ -25,7 +25,9 @@ class MediumController extends AdminController
             $grid->column('status')->switch();
             $grid->column('mark');
 
+            $grid->disableFilterButton();
             $grid->filter(function (Grid\Filter $filter) {
+                $filter->expand();
                 $filter->equal('name')->width(3);
                 $filter->equal('status')->select([0=>'关闭',1=>'开启'])->width(3);
 

@@ -17,8 +17,8 @@ class PluginParam extends Model
     ];
 
     public static $typeConfig = [
-        1 =>'ios',
-        2 =>'android',
+        1 =>'android',
+        2 =>'ios',
     ];
 
     public static $useConfig = [

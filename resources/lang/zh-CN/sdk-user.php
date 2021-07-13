@@ -1,8 +1,10 @@
 <?php 
 return [
     'labels' => [
-        'SdkUser' => 'SdkUser',
-        'sdk-user' => 'SdkUser',
+        'SdkUser' => '用户列表',
+        'sdk' => '系统',
+        'users' => '用户管理',
+        'user-info' =>'账号信息',
     ],
     'fields' => [
         'open_id' => '融合用户ID',

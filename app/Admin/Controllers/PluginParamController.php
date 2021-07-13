@@ -22,6 +22,7 @@ class PluginParamController extends AdminController
     protected function grid()
     {
         return Grid::make(new PluginParam(), function (Grid $grid) {
+            $grid->column('id');
             $grid->column('name')->using(Plugin::$nameConfig);
             $grid->column('e_mark')->using(PluginParam::$eMarkConfig);
             $grid->column('type')->using(PluginParam::$typeConfig);
@@ -33,9 +34,9 @@ class PluginParamController extends AdminController
                 return $newValue;
             })->label();
 
-            $grid->column('params')->display('查看')->modal(function ($modal) {
+            $grid->column('params')->display(admin_trans_label('param_key'))->modal(function ($modal) {
                 // 设置弹窗标题
-                $modal->title('插件参数');
+                $modal->title(admin_trans_label('plugin-param'));
 
                 // 自定义图标
                 $modal->icon('');
@@ -67,7 +68,9 @@ class PluginParamController extends AdminController
             $grid->column('status')->switch();
             $grid->column('mark');
 
+            $grid->disableFilterButton();
             $grid->filter(function (Grid\Filter $filter) {
+                $filter->expand();
                 $filter->equal('name')->select(Plugin::$nameConfig)->width(3);
                 $filter->equal('e_mark')->select(PluginParam::$eMarkConfig)->width(3);
                 $filter->equal('type')->select(PluginParam::$typeConfig)->width(3);

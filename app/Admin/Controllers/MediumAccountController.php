@@ -22,8 +22,11 @@ class MediumAccountController extends AdminController
     {
         return Grid::make(new MediumAccount(), function (Grid $grid) {
             $grid->model()->with(['medium']);
+            $grid->column('tracker');
             $grid->column('medium.name');
             $grid->column('type')->using(MediumAccount::$typeConfig);
+
+
             $grid->column('account');
             $grid->column('password')->display('查看') // 设置按钮名称
             ->modal(function ($modal) {
@@ -40,19 +43,23 @@ class MediumAccountController extends AdminController
 
             $grid->column('account_id');
             $grid->column('account_name');
-            $grid->column('tracker');
+
             $grid->column('agent_id')->using(MediumAccount::$agentConfig);
             $grid->column('company_id')->using(MediumAccount::$companyConfig);
             $grid->column('owner_id')->display(function($value){
                 return Administrator::find($value)->name;
             });
-            $grid->column('status')->switch();
-            $grid->column('mark');
             $grid->column('created_at');
+            $grid->column('mark');
+            $grid->column('status')->switch();
 
+            $grid->disableFilterButton();
             $grid->filter(function (Grid\Filter $filter) {
-                $filter->equal('account_name')->width(3);
+                $filter->expand();
+                $filter->equal('account')->width(3);
+                //$filter->equal('account_name')->width(3);
                 $filter->equal('type')->select(MediumAccount::$typeConfig)->width(3);
+                $filter->equal('agent_id')->select(MediumAccount::$agentConfig)->width(3);
                 $filter->equal('owner_id')->select(Administrator::all()->pluck('name', 'id'))->width(3);
                 $filter->equal('company_id')->select(MediumAccount::$companyConfig)->width(3);
                 $filter->equal('medium_id')->select(Medium::all()->pluck('name', 'id'))->width(3);

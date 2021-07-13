@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\Game;
 use App\Models\Cate;
+use Dcat\Admin\Admin;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -84,11 +85,19 @@ class GameController extends AdminController
     {
         return Form::make(new Game(), function (Form $form) {
             $form->text('name')->required();
-            $form->select('cate_id')->options(Cate::all()->pluck('name', 'id'))->required();
+            $Cate = new Cate();
+            $list = $Cate->select('name','id','game_secret')->get()->toArray();
+            $form->select('cate_id')->options(array_column($list,'name','id'))->required();
             $form->select('publisher_id')->options(Game::$publisherConfig)->required();
             $form->select('sign_id')->options(Game::$signConfig)->required();
             $form->select('cooperation_mode')->options(Game::$cooperationModeConfig)->required();
-            $form->text('game_secret')->required();
+            if($form->isCreating()){
+                $game_secrets = array_column($list,'game_secret','id');
+                Admin::script($this->scriptEdit(json_encode($game_secrets)));
+                $form->text('game_secret')->default('324234',true)->required();
+            }else{
+                $form->text('game_secret')->required();
+            }
             $form->hidden('status')->default(1);
             $form->text('mark');
 
@@ -99,5 +108,16 @@ class GameController extends AdminController
                 }
             });
         });
+    }
+
+    protected function scriptEdit($game_secrets){
+        return <<<JS
+        var game_secrets = $game_secrets;
+        $('select[name="cate_id"]').change(function(){
+            console.log($(this).val());
+            console.log(game_secrets[$(this).val()]);
+            $('input[name="game_secret"]').val(game_secrets[$(this).val()]);
+        });
+JS;
     }
 }
