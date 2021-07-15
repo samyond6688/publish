@@ -7,6 +7,7 @@ use App\Models\Cate;
 use App\Models\CateTheme;
 use App\Models\CateType;
 use App\Models\CostProduct;
+use App\Models\Partner;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -29,8 +30,8 @@ class CateController extends AdminController
             $grid->column('name')->display(function($name){
                 return $name.'['.$this->id.']';
             });;
-            $grid->column('developer')->using(Cate::$developerConfig);
-            $grid->column('sign_id')->using(Cate::$signConfig);
+            $grid->column('developer');
+            $grid->column('sign_id');
             $grid->column('cooperation_mode')->using(Cate::$cooperationModeConfig);
             $grid->column('cate_theme_id')->display(function($id){
                 return CateTheme::find($id)->toArray()['name'];
@@ -48,7 +49,7 @@ class CateController extends AdminController
                     // 自定义图标
                     $modal->icon('');
                     $html = '<div><lable>'.admin_trans_field('game_secret').'：</lable>'.$this->game_secret.'</div>
-<div><lable>'.admin_trans_field('address').'：</lable>'.$this->address.'</div>
+<div><lable>'.admin_trans_field('callback_url').'：</lable>'.$this->callback_url.'</div>
 <div><lable>'.admin_trans_field('app_sign').'：</lable>'.$this->app_sign.'</div>';
 
                     $card = new Card(null, $html);
@@ -122,8 +123,11 @@ class CateController extends AdminController
 
         return Form::make(new Cate(), function (Form $form) {
             $form->text('name')->required();
-            $form->select('developer')->options(Cate::$developerConfig)->required();
-            $form->select('sign_id')->options(Cate::$signConfig)->required();
+            $Partner = new Partner();
+            $Config = $Partner->gameConfig();
+            $agentConfig = $Partner->agentConfig();
+            $form->select('developer')->options(array_combine($Config,$Config))->required();
+            $form->select('sign_id')->options(array_combine($agentConfig,$agentConfig))->required();
             $form->select('cooperation_mode')->options(Cate::$cooperationModeConfig)->required();
             $form->select('cate_theme_id')->options(CateTheme::all()->pluck('name', 'id'))->required();
             $form->select('cate_type_id')->options(CateType::all()->pluck('name', 'id'))->required();

@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Partner extends Model
 {
-
-
+    public static $agentType = 4;
+    public static $gameType = 1;
+    public static $companyType = 5;
     public static $partnerType = [
         1 =>'游戏开发商',
         2 =>'联运渠道商',
@@ -41,5 +42,19 @@ class Partner extends Model
     public function getPartnerTypeAttribute($value)
     {
         return array_values(explode(',',$value) ?: []);
+    }
+
+    public function companyConfig(){
+        return $this->whereRaw('FIND_IN_SET(?,partner_type)',[self::$companyType])->pluck('name')->toArray();
+    }
+
+    public function gameConfig(){
+        return $this->whereRaw('FIND_IN_SET(?,partner_type)',[self::$gameType])->pluck('name')->toArray();
+    }
+    public function agentConfig(){
+        return $this->whereRaw('FIND_IN_SET(?,partner_type)',[self::$agentType])->pluck('name')->toArray();
+    }
+    public function allConfig(){
+        return $this->pluck('name')->toArray();
     }
 }

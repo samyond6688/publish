@@ -4,6 +4,8 @@ namespace App\Admin\Controllers;
 
 use App\Models\Game;
 use App\Models\Cate;
+use App\Models\Partner;
+use App\Models\Plugin;
 use Dcat\Admin\Admin;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
@@ -24,8 +26,8 @@ class GameController extends AdminController
         return Grid::make(new Game(), function (Grid $grid) {
             $grid->model()->with(['cate']);
             $grid->column('name');
-            $grid->column('publisher_id')->using(Game::$publisherConfig);
-            $grid->column('sign_id')->using(Game::$signConfig);
+            $grid->column('publisher_id');
+            $grid->column('sign_id');
             $grid->column('cooperation_mode')->using(Game::$cooperationModeConfig);
             $grid->column('cate.name');
              $grid->column('其它信息')
@@ -86,10 +88,13 @@ class GameController extends AdminController
         return Form::make(new Game(), function (Form $form) {
             $form->text('name')->required();
             $Cate = new Cate();
+            $Partner = new Partner();
             $list = $Cate->select('name','id','game_secret')->get()->toArray();
             $form->select('cate_id')->options(array_column($list,'name','id'))->required();
-            $form->select('publisher_id')->options(Game::$publisherConfig)->required();
-            $form->select('sign_id')->options(Game::$signConfig)->required();
+            $Config = $Partner->gameConfig();
+            $agentConfig = $Partner->agentConfig();
+            $form->select('publisher_id')->options(array_combine($Config,$Config))->required();
+            $form->select('sign_id')->options(array_combine($agentConfig,$agentConfig))->required();
             $form->select('cooperation_mode')->options(Game::$cooperationModeConfig)->required();
             if($form->isCreating()){
                 $game_secrets = array_column($list,'game_secret','id');

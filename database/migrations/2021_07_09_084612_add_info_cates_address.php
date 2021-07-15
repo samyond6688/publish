@@ -14,7 +14,7 @@ class AddInfoCatesAddress extends Migration
     public function up()
     {
         Schema::table('cates', function (Blueprint $table) {
-            $table->string('address')->default('');
+            $table->string('callback_url')->default('');
         });
     }
 
@@ -26,7 +26,7 @@ class AddInfoCatesAddress extends Migration
     public function down()
     {
         Schema::table('cates', function (Blueprint $table) {
-            $table->dropColumn('tax_item_type');
+            $table->dropColumn('callback_url');
         });
     }
 }

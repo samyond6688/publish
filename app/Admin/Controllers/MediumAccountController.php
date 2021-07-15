@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\MediumAccount;
+use App\Models\Partner;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -44,7 +45,7 @@ class MediumAccountController extends AdminController
             $grid->column('account_id');
             $grid->column('account_name');
 
-            $grid->column('agent_id')->using(MediumAccount::$agentConfig);
+            $grid->column('agent_id');
             $grid->column('company_id')->using(MediumAccount::$companyConfig);
             $grid->column('owner_id')->display(function($value){
                 return Administrator::find($value)->name;
@@ -109,7 +110,10 @@ class MediumAccountController extends AdminController
             $form->text('account')->required();
             $form->text('password')->required();
             $form->text('account_id');
-            $form->text('account_name');
+
+            $Partner = new Partner();
+            $config = $Partner->allConfig();
+            $form->select('account_name')->options(array_combine($config,$config))->required();
             if($form->isCreating()){
                 $tracker = $class->getTracker();
                 $form->text('tracker')->value($tracker);
@@ -119,7 +123,8 @@ class MediumAccountController extends AdminController
                 $form->text('tracker')->disable();
             }
 
-            $form->select('agent_id')->options(MediumAccount::$agentConfig)->required();
+            $agentConfig = $Partner->agentConfig();
+            $form->select('agent_id')->options(array_combine($agentConfig,$agentConfig))->required();
             $form->select('company_id')->options(MediumAccount::$companyConfig)->required();
             $form->select('owner_id')->options(Administrator::all()->pluck('name', 'id'))->required();
             $form->hidden('status')->default(1);

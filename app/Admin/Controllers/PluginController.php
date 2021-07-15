@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Partner;
 use App\Models\Plugin;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
@@ -21,7 +22,7 @@ class PluginController extends AdminController
     protected function grid()
     {
         return Grid::make(new Plugin(), function (Grid $grid) {
-            $grid->column('company')->using(Plugin::$companyConfig);
+            $grid->column('company');
 
             $grid->column('name')->using(Plugin::$nameConfig);
 
@@ -95,8 +96,11 @@ class PluginController extends AdminController
     {
         return Form::make(new Plugin(), function (Form $form) {
             $form->display('id');
+            $Plugin = new Partner();
+            $companyConfig = $Plugin->companyConfig();
+
             $form->select('name')->options(Plugin::$nameConfig);
-            $form->select('company')->options(Plugin::$companyConfig);
+            $form->select('company')->options(array_combine($companyConfig,$companyConfig));
             $form->text('account');
             $form->text('password');
             $form->text('site');

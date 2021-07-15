@@ -15,7 +15,7 @@ return [
         'app_sign' => '应用签名',
         'status' => '状态',
         'mark' => '备注',
-        'address' => '发货地址',
+        'callback_url' => '发货地址',
     ],
     'options' => [
     ],

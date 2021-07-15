@@ -107,7 +107,7 @@ class PartnerController extends AdminController
     {
         return Form::make(new Partner(), function (Form $form) {
             //$form->display('id');
-            $form->text('name')->rules('required|unique:partner');
+            $form->text('name')->rules('required|unique:partners');
             $form->checkbox('partner_type')->options(Partner::$partnerType)->saving(function ($value) {
                 // 转化成json字符串保存到数据库
                 return implode(',',$value);
