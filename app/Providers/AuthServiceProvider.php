@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -25,6 +26,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Auth::provider('adminUser', function ($app, array $config) {
+
+            // Return an instance of Illuminate\Contracts\Auth\UserProvider...
+            return new AdminUserProvider(\Dcat\Admin\Models\Administrator::class);
+        });
     }
 }

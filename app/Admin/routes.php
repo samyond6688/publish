@@ -1,5 +1,8 @@
 <?php
 
+use Gregwar\Captcha\CaptchaBuilder;
+use Gregwar\Captcha\PhraseBuilder;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Dcat\Admin\Admin;
@@ -30,4 +33,19 @@ Route::group([
     $router->resource('cost_products', 'CostProductController');
     $router->post('api/pluginParams', 'PackageController@pluginParam')->name('api.pluginParam');;
     //$router->resource('sdk', 'OrderController');
+
+    $router->post('/resetPassword', 'AdminUserController@resetPassword')->name('resetPassword');
+    $router->resource('auth/users', 'AdminUserController');
+    $router->get('api/thirdLogin', 'ApiController@thirdLogin');
+    $router->any('/captcha', function() {
+        $phraseBuilder = new PhraseBuilder(4);
+        $builder = new CaptchaBuilder(null,$phraseBuilder);
+        $builder->setTextColor(0,0,0);
+        $builder->build(100, 40);
+        $phrase = $builder->getPhrase();
+        //把内容存入session
+        Session::flash('milkcaptcha', $phrase); //存储验证码
+        ob_clean();
+        return response($builder->output())->header('Cache-Control', 'no-cache')->header('Content-type', 'image/jpeg');
+    });
 });

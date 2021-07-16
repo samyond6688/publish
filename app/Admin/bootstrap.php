@@ -56,5 +56,5 @@ Filter::resolving(function (Filter $filter) {
 
 Admin::navbar(function (Navbar $navbar) {
     $navbar->left(view('layouts.sidebar'));
-
+    $navbar->right(view('layouts.right'));
 });
