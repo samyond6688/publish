@@ -36,6 +36,7 @@ Route::group([
 
     $router->post('/resetPassword', 'AdminUserController@resetPassword')->name('resetPassword');
     $router->resource('auth/users', 'AdminUserController');
+    $router->any('api/users', 'ApiController@users');
     $router->get('api/thirdLogin', 'ApiController@thirdLogin');
     $router->post('auth/setting', 'AuthController@putSetting');//支持post
     $router->any('/captcha', function() {

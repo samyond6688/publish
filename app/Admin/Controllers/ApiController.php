@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -28,14 +29,20 @@ class ApiController extends AdminController
 {
     public function users(Request $request)
     {
-        $user = Administrator::find(3);
-        dd($user);
-        Auth::guard('admin')->login($user);
-        return redirect('/admin');
-        //return User::where('name', 'like', "%$q%")->paginate(null, ['id', 'name as text']);
         $Qweixin = new Qweixin();
+        $userInfo = $Qweixin->getUserInfo('wanghaichao');
+        $to = 'wanghaichao@3k.com';
         $password = Str::random(10);
-        return $Qweixin->setmessage('fuqiulong|zhaosiye','Tapplus业务中心的密码有重置：密码：'.$password);
+        $title = 'Tapplus业务中心密码重置通知！';
+        $content = '您的Tapplus业务中心密码已重置，请登录后修改密码！'."\r\n".'密码：'.$password;
+        //Auth::guard('admin')->login($user);
+        //return redirect('/admin');
+        //return User::where('name', 'like', "%$q%")->paginate(null, ['id', 'name as text']);
+        Mail::raw($content, function ($message) use ($title,$to){
+            $message ->to($to)->subject($title);
+        });
+        dd(Mail::failures());
+        //return $Qweixin->setmessage('fuqiulong|zhaosiye','Tapplus业务中心的密码有重置：密码：'.$password);
     }
 
     public function thirdLogin(Request $request)

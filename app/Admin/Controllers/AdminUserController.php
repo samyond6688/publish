@@ -180,6 +180,9 @@ class AdminUserController extends BaseUserController
             }
         }else{
             $Qweixin = new Qweixin();
+            DB::table('admin_users')->where(['id'=>$id,'username'=>$data->username])->update([
+                'password' => bcrypt($password)
+            ]);
             return $Qweixin->setmessage($data->username, $content);
         }
     }
