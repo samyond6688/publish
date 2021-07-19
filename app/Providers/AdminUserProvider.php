@@ -48,7 +48,6 @@ class AdminUserProvider extends  EloquentUserProvider
         // Then we can execute the query and, if we found a user, return it in a
         // Eloquent User "model" that will be utilized by the Guard instances.
         $query = $this->newModelQuery();
-
         foreach ($credentials as $key => $value) {
             if (Str::contains($key, 'password')) {
                 continue;
@@ -63,7 +62,6 @@ class AdminUserProvider extends  EloquentUserProvider
             }
         }
         $data =  $query->first();
-
         //验证验证码$data->code
         return $data;
     }

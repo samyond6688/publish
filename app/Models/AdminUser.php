@@ -13,6 +13,6 @@ use Dcat\Admin\Models\Administrator;
 class AdminUser extends Administrator
 {
 
-    protected $fillable = ['username', 'password', 'name', 'avatar','is_first'];
+    protected $fillable = ['username', 'password', 'name', 'avatar','is_first','email','status'];
 
 }

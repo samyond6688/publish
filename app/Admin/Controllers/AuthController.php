@@ -2,6 +2,8 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\AdminUser;
+use Dcat\Admin\Admin;
 use Dcat\Admin\Http\Controllers\AuthController as BaseAuthController;
 use Dcat\Admin\Layout\Content;
 use Illuminate\Support\Facades\Auth;
@@ -50,7 +52,13 @@ class AuthController extends BaseAuthController
         }
 
         if ($this->guard()->attempt($credentials, $remember)) {
-            //dump($this->guard());
+            if($this->guard()->user()->status==0){
+                return response()->json([
+                'data'=>[],
+                'status'=>false,
+                'errors' =>['captcha'=>['账号被锁请联系管理员']]
+            ], 422);
+            }
             $data =  $this->sendLoginResponse($request);
             //dump($this->guard()->getSession()->all());
             return $data;
@@ -92,6 +100,27 @@ class AuthController extends BaseAuthController
 //            Redis::del($key);
 //        }
 //    }
+
+    public function putSetting()
+    {
+        $Admin = new AdminUser();
+        $name = $_REQUEST['name'];
+        $id = Admin::user()->getKey();
+        $data = $Admin->where(['id'=>$id,'username'=>$name])->get()->toArray();
+        $data = $data ? $data[0] : [];
+
+        $form = $this->settingForm();
+        if (!$data['is_first'] && ! $this->validateCredentialsWhenUpdatingPassword()) {
+            $form->responseValidationMessages('old_password', trans('admin.old_password_error'));
+        }
+        if($data['is_first']){
+            $Admin->where(['id'=>$id,'username'=>$name])->update([
+                'is_first'=>$_REQUEST['is_first']
+            ]);
+        }
+
+        return $form->update(Admin::user()->getKey());
+    }
 
 
 }

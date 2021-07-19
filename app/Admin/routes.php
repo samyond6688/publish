@@ -37,10 +37,13 @@ Route::group([
     $router->post('/resetPassword', 'AdminUserController@resetPassword')->name('resetPassword');
     $router->resource('auth/users', 'AdminUserController');
     $router->get('api/thirdLogin', 'ApiController@thirdLogin');
+    $router->post('auth/setting', 'AuthController@putSetting');//支持post
     $router->any('/captcha', function() {
         $phraseBuilder = new PhraseBuilder(4);
         $builder = new CaptchaBuilder(null,$phraseBuilder);
         $builder->setTextColor(0,0,0);
+        $builder->setBackgroundColor(220, 210, 230);// 设置背景颜色RGB
+        $builder->setDistortion(false);
         $builder->build(100, 40);
         $phrase = $builder->getPhrase();
         //把内容存入session

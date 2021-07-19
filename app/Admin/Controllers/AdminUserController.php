@@ -54,23 +54,25 @@ class AdminUserController extends BaseUserController
                     ->else()
                     ->display('');
             }
-
+            $grid->column('status', admin_trans('admin.status'))->switch();
+            //$grid->column('status',)
             $grid->column('created_at');
-            $grid->column('updated_at')->sortable();
+            //$grid->column('updated_at')->sortable();
 
-            $grid->quickSearch(['id', 'name', 'username']);
+            $grid->quickSearch(['id', 'name', 'username','status']);
 
             $grid->showQuickEditButton();
             $grid->enableDialogCreate();
             $grid->showColumnSelector();
             $grid->disableEditButton();
 
-            $grid->actions(function (Grid\Displayers\Actions $actions) {
+            $grid->actions(function (Grid\Displayers\Actions $actions) use ($grid){
                 if ($actions->getKey() == AdministratorModel::DEFAULT_ID) {
                     $actions->disableDelete();
                 } else {
                     $actions->append('<a class="reset_password" admin_id="' . $this->id . '" admin_name="'.$this->username.'" href="javascript:void(0)">重置密码</a>');
                 }
+                $grid->column('status', admin_trans('admin.status'))->switch();
             });
             Admin::script($this->script($this->form()));
 
@@ -87,7 +89,9 @@ class AdminUserController extends BaseUserController
             $id = $form->getKey();
 
             $form->display('id', 'ID');
-            $form->hidden('is_first');
+            $form->hidden('is_first')->default(0);
+            $form->hidden('status')->default(1);
+            $form->hidden('email')->default('');
             $form->text('username', trans('admin.username'))
                 ->required()
                 ->creationRules(['required', "unique:{$connection}.{$userTable}"])
@@ -99,7 +103,7 @@ class AdminUserController extends BaseUserController
                 $form->password('password', trans('admin.password'))
                     //->rules('required|regex:/^[\w]+$/')
 
-                    ->rules('required|regex:/^[^\s\/"\"]+$/')
+                    ->rules('regex:/^[^\s\/"\"]+$/')
                     ->minLength(10)
                     ->maxLength(20)
                     ->customFormat(function () {
@@ -107,7 +111,7 @@ class AdminUserController extends BaseUserController
                     });
             } else {
                 $form->password('password', trans('admin.password'))
-                    ->required()
+                    ->rules('regex:/^[^\s\/"\"]+$/')
                     ->minLength(10)
                     ->maxLength(20);
             }
