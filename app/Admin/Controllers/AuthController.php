@@ -104,11 +104,10 @@ class AuthController extends BaseAuthController
     public function putSetting()
     {
         $Admin = new AdminUser();
-        $name = $_REQUEST['name'];
+        $name = $_REQUEST['username'];
         $id = Admin::user()->getKey();
         $data = $Admin->where(['id'=>$id,'username'=>$name])->get()->toArray();
         $data = $data ? $data[0] : [];
-
         $form = $this->settingForm();
         if (!$data['is_first'] && ! $this->validateCredentialsWhenUpdatingPassword()) {
             $form->responseValidationMessages('old_password', trans('admin.old_password_error'));
