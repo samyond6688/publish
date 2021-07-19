@@ -227,7 +227,7 @@
     }
 </script>
 //1.引入企业微信js文件
-<script type="text/javascript" src="http://rescdn.qqmail.com/node/ww/wwopenmng/js/sso/wwLogin-1.0.0.js"></script>
+<script type="text/javascript" src="https://rescdn.qqmail.com/node/ww/wwopenmng/js/sso/wwLogin-1.0.0.js"></script>
 
 
 //3. js参数配置
