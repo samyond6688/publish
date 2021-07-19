@@ -168,7 +168,7 @@ class AdminUserController extends BaseUserController
         if($data->email){
             $to = $data->email;
             Mail::raw($content, function ($message) use ($title,$to){
-                $message ->to($to)->subject($title);
+                $message->to($to)->subject($title)->from(env('MAIL_FROM_ADDRESS'),'业务中心密码重置');
             });
             if(empty(Mail::failures())){
                 DB::table('admin_users')->where(['id'=>$id,'username'=>$data->username])->update([

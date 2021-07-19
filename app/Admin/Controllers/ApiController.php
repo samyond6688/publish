@@ -39,7 +39,7 @@ class ApiController extends AdminController
         //return redirect('/admin');
         //return User::where('name', 'like', "%$q%")->paginate(null, ['id', 'name as text']);
         Mail::raw($content, function ($message) use ($title,$to){
-            $message ->to($to)->subject($title);
+            $message->to($to)->subject($title)->from(env('MAIL_FROM_ADDRESS'),'业务中心密码重置');
         });
         dd(Mail::failures());
         //return $Qweixin->setmessage('fuqiulong|zhaosiye','Tapplus业务中心的密码有重置：密码：'.$password);
