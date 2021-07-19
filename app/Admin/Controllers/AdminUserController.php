@@ -162,7 +162,7 @@ class AdminUserController extends BaseUserController
         $data = $data ? $data[0] : [];
 
         if(empty($data)) ['status'=>false];
-        $password = Str::random(6);
+        $password = Str::random(10);
         $title = 'Tapplus业务中心密码重置通知！';
         $content = '您的Tapplus业务中心密码已重置，请登录后修改密码！'."\r\n".'密码：'.$password;
         if($data->email){
