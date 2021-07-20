@@ -66,7 +66,7 @@ button:focus {
     height: 100vh;
     background-repeat: no-repeat;
     background-position: center center no-repeat;
-    background-color: #2E3E9C;
+    background-color: #000;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -181,7 +181,7 @@ button:focus {
 
 .tabcontent {
     margin-top: 24px;
-    border-bottom: 1px solid #ebebeb;
+   /* border-bottom: 1px solid #ebebeb;*/
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -424,11 +424,11 @@ input[type=number]::-webkit-outer-spin-button {
 
 .fromSubmit {
     color: #fff;
-    background-color: #fbbd08;
+    background-color: #ff8500;
     width: 100%;
     margin-top: 30px;
     height: 36px;
-    border-color: #fbbd08;
+    border-color: #ff8500;
 }
 
 .SignFlow-switchPassword {
@@ -498,6 +498,8 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: center;
     padding: 40px 0;
     display: none;
+    background: #fe912a;
+    height: 100%;
 }
 
 .Qrcode-title {
@@ -639,4 +641,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: inherit;
     font-weight: inherit;
     padding: 0;
+}
+.form-control{
+    height: 50px;!important;
 }

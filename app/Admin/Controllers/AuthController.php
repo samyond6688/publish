@@ -4,8 +4,10 @@ namespace App\Admin\Controllers;
 
 use App\Models\AdminUser;
 use Dcat\Admin\Admin;
+use Dcat\Admin\Form;
 use Dcat\Admin\Http\Controllers\AuthController as BaseAuthController;
 use Dcat\Admin\Layout\Content;
+use App\Models\AdminUser as Administrator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
@@ -104,21 +106,73 @@ class AuthController extends BaseAuthController
     public function putSetting()
     {
         $Admin = new AdminUser();
-        $name = $_REQUEST['username'];
+        $name = $_REQUEST['name'];
         $id = Admin::user()->getKey();
-        $data = $Admin->where(['id'=>$id,'username'=>$name])->get()->toArray();
+        $data = $Admin->where(['id'=>$id,'name'=>$name])->get()->toArray();
         $data = $data ? $data[0] : [];
         $form = $this->settingForm();
         if (!$data['is_first'] && ! $this->validateCredentialsWhenUpdatingPassword()) {
             $form->responseValidationMessages('old_password', trans('admin.old_password_error'));
         }
         if($data['is_first']){
-            $Admin->where(['id'=>$id,'username'=>$name])->update([
+            $Admin->where(['id'=>$id,'name'=>$name])->update([
                 'is_first'=>$_REQUEST['is_first']
             ]);
         }
 
         return $form->update(Admin::user()->getKey());
+    }
+
+    protected function settingForm()
+    {
+        return new Form(new Administrator(), function (Form $form) {
+            $form->action(admin_url('auth/setting'));
+
+            $form->disableCreatingCheck();
+            $form->disableEditingCheck();
+            $form->disableViewCheck();
+
+            $form->tools(function (Form\Tools $tools) {
+                $tools->disableView();
+                $tools->disableDelete();
+            });
+
+            $form->display('username', trans('admin.username'));
+            $form->text('name', trans('admin.name'))->required();
+            $form->image('avatar', trans('admin.avatar'))->autoUpload();
+
+            $form->password('old_password', trans('admin.old_password'));
+            $form->password('password', trans('admin.password'))
+                ->minLength(10)
+                ->maxLength(20)
+                ->customFormat(function ($v) {
+                    if ($v == $this->password) {
+                        return;
+                    }
+
+                    return $v;
+                });
+            $form->password('password_confirmation', trans('admin.password_confirmation'))->same('password');
+
+            $form->ignore(['password_confirmation', 'old_password']);
+
+            $form->saving(function (Form $form) {
+                if ($form->password && $form->model()->password != $form->password) {
+                    $form->password = bcrypt($form->password);
+                }
+
+                if (! $form->password) {
+                    $form->deleteInput('password');
+                }
+            });
+
+            $form->saved(function (Form $form) {
+                return $form
+                    ->response()
+                    ->success(trans('admin.update_succeeded'))
+                    ->redirect('auth/setting');
+            });
+        });
     }
 
 

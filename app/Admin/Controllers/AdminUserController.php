@@ -79,6 +79,8 @@ class AdminUserController extends BaseUserController
         });
     }
 
+
+
     public function form()
     {
         return Form::make(Administrator::with(['roles']), function (Form $form) {
@@ -172,7 +174,8 @@ class AdminUserController extends BaseUserController
             });
             if(empty(Mail::failures())){
                 DB::table('admin_users')->where(['id'=>$id,'username'=>$data->username])->update([
-                    'password' => bcrypt($password)
+                    'password' => bcrypt($password),
+                    'is_first'=>1
                 ]);
                 return ['status'=>true];
             }else{
@@ -181,7 +184,8 @@ class AdminUserController extends BaseUserController
         }else{
             $Qweixin = new Qweixin();
             DB::table('admin_users')->where(['id'=>$id,'username'=>$data->username])->update([
-                'password' => bcrypt($password)
+                'password' => bcrypt($password),
+                'is_first'=>1
             ]);
             return $Qweixin->setmessage($data->username, $content);
         }
