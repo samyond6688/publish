@@ -24,7 +24,7 @@ class PartnerController extends AdminController
             $grid->column('partner_type')->display(function($value){
                 $str = '';
                 foreach ($value as $item){
-                    $str .= '<label>'.Partner::$partnerType[$item].'</label>';
+                    $str .= '<label>'.(Partner::$partnerType[$item] ?? '').'</label>';
                 }
                 return $str;
                 //return Partner::$partnerType[$value];
